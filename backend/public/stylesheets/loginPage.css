@@ -1,0 +1,43 @@
+body {
+
+  
+  padding: 5%;
+  background-color: slateblue;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.login{
+  background-color: #00B7FF;
+  border: 2px solid black;
+  padding: 1%;
+  align-items: center;
+  text-align: center;
+
+  margin: 33%;
+ 
+  width: 33%;
+}
+
+.title{
+  text-align: center;
+  font: 15px;
+}
+.inputArea{
+  text-align: center;
+  display: flexbox;
+  padding: 1%;
+}
+.submitButton{
+  background-color: white;
+  display: flexbox;
+  margin-left: 33%;
+  margin-right: 33%;
+  margin-top: 5%;
+  width: 33%;
+}
+
+
+

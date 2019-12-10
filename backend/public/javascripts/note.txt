@@ -1,0 +1,3 @@
+Run in javascripts dir: 
+npx babel --watch src --out-dir . --presets react-app/prod 
+to setup babel preprocessing

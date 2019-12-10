@@ -1,0 +1,119 @@
+.employee{
+    border: 2px solid black;
+    padding: 10px;
+    align-items: center;
+
+}
+
+.employee-name{
+    text-align: center;
+    border: 2px solid green;
+    display:flexbox;
+
+}
+
+.employee-assignments{
+    display:flexbox;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.employee-assign{
+    display:inline;
+    
+    text-align: center;
+    border: 2px solid black;
+    background-color: slateblue;
+    padding: 5px;
+}
+
+.employee-d{
+    display: flex;
+}
+
+.employee-desc{
+   
+    text-align: left;
+    border: 2px solid black;
+    padding: 10px;
+    width: 33%;
+}
+
+.employee-morale{
+    
+    padding: 10px;
+    text-align: center;
+    border: 2px solid black;
+    width: 33%;
+}
+
+.employee-wage{
+    padding: 10px;
+    border: 2px solid black;
+   
+    width: 33%;
+    align-items: center;
+    text-align: center;
+}
+
+
+.dropdown{
+    margin: 10px;
+    border: 2px solid black;
+    background-color: slateblue;
+}
+
+.dropdown:hover{
+    background-color: blue;
+    color: white;
+}
+
+.projects{
+
+    border: 2px solid blue;
+    width: 50%;
+}
+
+.employees{
+    width: 50%;
+}
+
+
+
+.content{
+    display:flex;
+}
+
+.project{
+    display:flex;
+    padding: 10px;
+    border: 2px solid black;
+}
+
+.project-progress{
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.project-dropdown-button{
+    height: 20px;
+}
+
+.project-dropdown{
+    display: flexbox;
+    align-items: center;
+    border:2px solid darkblue;
+    padding: 10px;
+}
+
+.task{
+    display: flex;
+    padding: 10px;
+    border: 2px solid black;
+}
+
+.group{
+    border: 2px solid darkblue;
+    padding: 10px;
+}
