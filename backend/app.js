@@ -1,11 +1,14 @@
 var createError = require('http-errors');
 var express = require('express');
+var mysql = require('mysql');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+var config = require('./config');
 
 var app = express();
 
@@ -15,8 +18,33 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+	let conn = mysql.createConnection({
+		host: config.host,
+		user: config.user,
+		password: config.password,
+		database: config.dbname
+	});
+	conn.connect((ERR) => {
+		if (err) return next(err);
+		req.db = conn;
+		next();
+	})
+});
+
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/test', function(req, res, next) {
+	console.warn("in test");
+	req.db.query('SELECT * FROM Suppliers',
+		(err, results) => {
+			if (err) return next(err);
+			res.render('index', { title: 'Express' });
+		}
+	);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
