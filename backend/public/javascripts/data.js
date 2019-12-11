@@ -8,20 +8,7 @@ var data = {
             deadline: new Date(),
             value: 1000,
             progress: 0,
-            tasks:[
-                {
-                    name: "buy shovels",
-                    type: "cha",
-                    progress: 0,
-                    assignees: []
-                },
-                {
-                    name: "Actually dig",
-                    type: "str",
-                    progress: 0,
-                    assignees: []
-                }
-            ]
+            pid: 0,
 
         },
         {
@@ -29,23 +16,52 @@ var data = {
             deadline: new Date(),
             value: 1000,
             progress: 0,
-            tasks:[
-                {
-                    name: "Buy more shovels",
-                    type: "cha",
-                    progress: 0,
-                    assignees: []
-                },
-                {
-                    name: "Actually dig deeper",
-                    type: "str",
-                    progress: 0,
-                    assignees: []
-                }
-            ]
+            pid: 1
 
         }
     ],
+    tasks:[
+        {
+            name: "nothing",
+            type: "cha",
+            progress: -1,
+            pid: -1,
+            tid: -1
+           
+        },
+        {
+            name: "Buy more shovels",
+            type: "cha",
+            progress: 0,
+            assignees: [],
+            tid: 0,
+            pid: 1,
+
+        },
+        {
+            name: "Actually dig deeper",
+            type: "str",
+            progress: 0,
+            pid: 1,
+            tid: 1
+        },
+        {
+            name: "buy shovels",
+            type: "cha",
+            progress: 0,
+            pid: 0,
+            tid: 2
+        },
+        {
+            name: "Actually dig",
+            type: "str",
+            progress: 0,
+            pid: 0,
+            tid: 3
+        },
+       
+    ],
+
     employees:[
         {
             name: "Max Wisenfool",
@@ -56,6 +72,8 @@ var data = {
             cha: 7,
             eid: 0,
             morale: 0,
+            tid: -1,
+            gid: -1
         },
         {
             name: "Big strongarm",
@@ -66,6 +84,8 @@ var data = {
             cha: 7,
             eid: 1,
             morale: 0,
+            tid: -1,
+            gid: -1
         },
         {
             name: "Alexa",
@@ -76,6 +96,8 @@ var data = {
             cha: 10,
             eid: 2,
             morale: 0,
+            tid: -1,
+            gid: -1
         },
         {
             name: "Lily Price",
@@ -86,19 +108,23 @@ var data = {
             cha: 10,
             eid: 3,
             morale: 0,
+            tid: -1,
+            gid: -1
         },
     ],
 
-    noTask:{
-        name: "nothing",
-        type: "cha",
-        progress: -1,
-        assignees: []
-    },
+   
 
     groups:[
-
+        {
+            name: "nothing",
+            gid: -1
+           
+        },
     ],
+
+    maxGid: 0,
+
 
     projectProposals: [
         {
@@ -152,23 +178,29 @@ window.setInterval(()=>{
     for (let p of data.projects){
         //reset to 0 to prevent accumulation
         p.progress = 0
-        for (let t of p.tasks){
-            for (let e of t.assignees){
-                t.progress += e[t.type]
-                data.money -= e.wage
-                assignedEids.push(e.eid)
+        for (let t of data.tasks){
+            for (let e of data.employees){
+                if (e.tid == t.tid){
+                    t.progress += e[t.type]
+                }
+               
+                
                 
             }
             //p.progress is the sum of the task progressses
-            p.progress += t.progress
+            if (t.pid == p.pid){
+                p.progress += t.progress
+            }
+           
         }
         
     }
     //morale update
     for (let e of data.employees){
-        if (e.eid in assignedEids){
+        if (e.tid != -1){
             e.morale += (e.wage - 11)
         }
+        data.money -= e.wage
        
     }
     tick += 1

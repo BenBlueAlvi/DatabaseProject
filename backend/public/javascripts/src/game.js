@@ -17,6 +17,7 @@ class Game extends React.Component {
    this.onGroupInputUpdate = this.onGroupInputUpdate.bind(this);
    this.addGroup = this.addGroup.bind(this);
  
+ 
   }
 
   componentDidMount() {
@@ -37,20 +38,42 @@ class Game extends React.Component {
 
 
   addGroup(){
+
       if (this.state.groupInput != ""){
          data.groups.push({
             name: this.state.groupInput,
-            members: []
+            gid: data.maxGid
           })
+          data.maxGid++;
+          console.log(data.maxGid)
+          let groups = [];
+          for (let g = 1; g < data.groups.length; g++){
+            groups.push(<Group key={g} id={g} name={data.groups[g].name} delete={this.delGroup.bind(this, g)}/>)
+          }
+
+
           this.setState({
             ...this.state,
             groupInput: "",
-            groups: data.groups.map((e, index)=>(
-                <Group key={index} id={index} name={e.name}/>
-            ))
+            groups: groups
           })
       }
      
+  }
+
+  delGroup(id){
+    data.groups.splice(id, 1)
+    let groups = [];
+    for (let g = 1; g < data.groups.length; g++){
+        groups.push(<Group key={g} id={g} name={data.groups[g].name} delete={this.delGroup.bind(this, g)}/>)
+    }
+      this.setState({
+        ...this.state,
+        groupInput: "",
+        groups: groups
+      })
+
+   
   }
 
   onGroupInputUpdate(event){

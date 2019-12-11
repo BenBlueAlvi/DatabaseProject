@@ -20,8 +20,8 @@ var Group = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Group.__proto__ || Object.getPrototypeOf(Group)).call(this, props));
 
         _this.state = {
-            employees: data.groups[_this.props.id].members,
-            selected: false
+            selected: false,
+            show: true
         };
         _this.select = _this.select.bind(_this);
 
@@ -38,53 +38,117 @@ var Group = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            var info = void 0;
-            //set up dropdown stuff
-            if (this.state.selected) {
-                //todo clear assignies after assignment
-                var members = data.groups[this.props.id].members.map(function (e, index) {
-                    return React.createElement(
+            if (this.state.show) {
+                var info = void 0;
+                //set up dropdown stuff
+                if (this.state.selected) {
+                    //todo clear assignies after assignment
+                    var members = [];
+                    var index = 0;
+                    var _iteratorNormalCompletion = true;
+                    var _didIteratorError = false;
+                    var _iteratorError = undefined;
+
+                    try {
+                        for (var _iterator = data.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            var e = _step.value;
+                            var _iteratorNormalCompletion2 = true;
+                            var _didIteratorError2 = false;
+                            var _iteratorError2 = undefined;
+
+                            try {
+                                for (var _iterator2 = data.groups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                    var g = _step2.value;
+
+                                    console.log(e.gid, g.gid);
+
+                                    if (e.gid == g.gid) {
+                                        members.push(React.createElement(
+                                            "div",
+                                            null,
+                                            React.createElement(
+                                                "div",
+                                                null,
+                                                index,
+                                                ": ",
+                                                e.name
+                                            )
+                                        ));
+                                        index++;
+                                    }
+                                }
+                            } catch (err) {
+                                _didIteratorError2 = true;
+                                _iteratorError2 = err;
+                            } finally {
+                                try {
+                                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                        _iterator2.return();
+                                    }
+                                } finally {
+                                    if (_didIteratorError2) {
+                                        throw _iteratorError2;
+                                    }
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError = true;
+                        _iteratorError = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion && _iterator.return) {
+                                _iterator.return();
+                            }
+                        } finally {
+                            if (_didIteratorError) {
+                                throw _iteratorError;
+                            }
+                        }
+                    }
+
+                    info = React.createElement(
                         "div",
                         null,
                         React.createElement(
                             "div",
                             null,
-                            index,
-                            ": ",
-                            e.name
-                        )
+                            "Member employees"
+                        ),
+                        members
                     );
-                });
+                } else {
+                    info = React.createElement("div", null);
+                }
 
-                info = React.createElement(
+                return React.createElement(
                     "div",
-                    null,
+                    { className: "group" },
                     React.createElement(
                         "div",
                         null,
-                        "Member employees"
+                        this.props.name
                     ),
-                    members
+                    React.createElement(
+                        "button",
+                        { onClick: this.select },
+                        "Expand"
+                    ),
+                    React.createElement(
+                        "button",
+                        { onClick: this.props.delete },
+                        "Delete"
+                    ),
+                    React.createElement(
+                        "button",
+                        { onClick: this.props.delete },
+                        "Assign Manager"
+                    ),
+                    info
                 );
             } else {
-                info = React.createElement("div", null);
+                return React.createElement("div", null);
             }
-
-            return React.createElement(
-                "div",
-                { className: "group" },
-                React.createElement(
-                    "div",
-                    null,
-                    this.props.name
-                ),
-                React.createElement(
-                    "button",
-                    { onClick: this.select },
-                    "Expand"
-                ),
-                info
-            );
         }
     }]);
 

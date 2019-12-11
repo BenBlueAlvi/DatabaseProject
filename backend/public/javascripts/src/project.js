@@ -6,7 +6,6 @@ class Project extends React.Component {
     super(props);
     //setup state
    this.state = {
-       tasks: data.projects[this.props.id].tasks,
        progress: 0,
        selected: false
    }
@@ -42,8 +41,20 @@ class Project extends React.Component {
   
   
   render() {
-    let tasks = this.state.tasks.map((t, index) => (
-        <Task key={index} id={index} pid={this.props.id} name={t.name}/>));
+    
+       
+    let tasks = [];
+    let index = 0;
+    for (let p of data.projects){
+        for (let t of data.tasks){
+            if (p.pid == t.tid){
+                tasks.push(
+                    <Task key={index} id={index} pid={this.props.id} name={t.name}/>
+                );
+                index++;
+            }
+        }
+    }
 
     let info;
     if (this.state.selected){

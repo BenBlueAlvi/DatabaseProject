@@ -20,13 +20,16 @@ class UserLogin extends React.Component {
 
   login(event){
     window.location.href = "/game.html";
-
+    fetch("/auth", {
+      method: "POST",
+      body: JSON.stringify(this.state)
+    }).then((res) => res.json())
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err))
   }
 
   register(event){
    
-
-
   }
 
   onUsernameUpdate(event){

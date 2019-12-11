@@ -7,12 +7,12 @@ class Employee extends React.Component {
     super(props);
     //setup state
     this.state = {
-        group: "",
-        task: data.noTask,
+        group: data.groups[0],
+        task: data.tasks[0],
         showGroups: false,
         showTasks: false,
         wage: data.employees[this.props.id].wage,
-        morale: 0
+        morale: data.employees[this.props.id].morale
         
     }
     this.groupDropdown = this.groupDropdown.bind(this);
@@ -43,31 +43,10 @@ class Employee extends React.Component {
           ...this.state,
           task: t
       })
-      //clear assignees after assignment
-      for (let p=0; p < data.projects.length; p++){
-          for (let v=0; v < data.projects[p].tasks.length; v++){
-              for (let e=0; e < data.projects[p].tasks[v].assignees.length; e++){
-                  if(data.projects[p].tasks[v].assignees[e].eid == this.props.eid){
-                        data.projects[p].tasks[v].assignees.splice(e,1)
-                  }
-              }
-          }
-      }
+     
 
       
-      t.assignees = [
-          ...t.assignees,
-          {
-            name: this.props.name,
-            desc: this.props.desc,
-            wage: this.state.wage,
-            str: this.props.str,
-            int: this.props.int,
-            cha: this.props.cha,
-            eid: this.props.eid
-            
-          }
-      ]
+     data.employees[this.props.id].tid = t.tid
   }
 
   assignGroup(g){
@@ -75,29 +54,7 @@ class Employee extends React.Component {
         ...this.state,
         group: g
     })
-    //clear assignees after assignment
-    for (let p=0; p < data.groups.length; p++){
-        for (let v=0; v < data.groups[p].members.length; v++){
-           if (data.groups[p].members[v].eid == this.props.eid){
-                data.groups[p].members.splice(v,1)
-           }
-        }
-    }
-
-    
-    g.members = [
-        ...g.members,
-        {
-          name: this.props.name,
-          desc: this.props.desc,
-          wage: this.state.wage,
-          str: this.props.str,
-          int: this.props.int,
-          cha: this.props.cha,
-          eid: this.props.eid
-          
-        }
-    ]
+    data.employees[this.props.id].gid = g.gid
   }
 
   incWage(){
@@ -121,21 +78,8 @@ class Employee extends React.Component {
     
   }
 
-  componentDidMount() {
-    this.update = setInterval(()=>{
-        this.setState({
-            ...this.state,
-           morale:  data.employees[this.props.id].morale
-        })
-        
-    }
-        ,1
-    );
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.update);
-  }
+ 
+ 
  
   
   render() {
@@ -154,13 +98,13 @@ class Employee extends React.Component {
 
 
     if (this.state.showTasks){
-        tasks = data.projects.map((p, index) => (
-              p.tasks.map((t, idx)=>(
-                  <div className="dropdown" key={index+idx} onClick={this.assignTask.bind(this, t)}>
-                      {p.name}: {t.name}
-                  </div>
-              ))  
-        ));
+       
+        data.tasks.map((t, idx)=>(
+            <div className="dropdown" key={idx} onClick={this.assignTask.bind(this, t)}>
+                {t.pid}: {t.name}
+            </div>
+        ))  
+    
     }
 
     let morale = ""

@@ -2,8 +2,6 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -22,12 +20,12 @@ var Employee = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Employee.__proto__ || Object.getPrototypeOf(Employee)).call(this, props));
 
         _this.state = {
-            group: "",
-            task: data.noTask,
+            group: data.groups[0],
+            task: data.tasks[0],
             showGroups: false,
             showTasks: false,
             wage: data.employees[_this.props.id].wage,
-            morale: 0
+            morale: data.employees[_this.props.id].morale
 
         };
         _this.groupDropdown = _this.groupDropdown.bind(_this);
@@ -60,27 +58,8 @@ var Employee = function (_React$Component) {
             this.setState(Object.assign({}, this.state, {
                 task: t
             }));
-            //clear assignees after assignment
-            for (var p = 0; p < data.projects.length; p++) {
-                for (var v = 0; v < data.projects[p].tasks.length; v++) {
-                    for (var e = 0; e < data.projects[p].tasks[v].assignees.length; e++) {
-                        if (data.projects[p].tasks[v].assignees[e].eid == this.props.eid) {
-                            data.projects[p].tasks[v].assignees.splice(e, 1);
-                        }
-                    }
-                }
-            }
 
-            t.assignees = [].concat(_toConsumableArray(t.assignees), [{
-                name: this.props.name,
-                desc: this.props.desc,
-                wage: this.state.wage,
-                str: this.props.str,
-                int: this.props.int,
-                cha: this.props.cha,
-                eid: this.props.eid
-
-            }]);
+            data.employees[this.props.id].tid = t.tid;
         }
     }, {
         key: "assignGroup",
@@ -88,25 +67,7 @@ var Employee = function (_React$Component) {
             this.setState(Object.assign({}, this.state, {
                 group: g
             }));
-            //clear assignees after assignment
-            for (var p = 0; p < data.groups.length; p++) {
-                for (var v = 0; v < data.groups[p].members.length; v++) {
-                    if (data.groups[p].members[v].eid == this.props.eid) {
-                        data.groups[p].members.splice(v, 1);
-                    }
-                }
-            }
-
-            g.members = [].concat(_toConsumableArray(g.members), [{
-                name: this.props.name,
-                desc: this.props.desc,
-                wage: this.state.wage,
-                str: this.props.str,
-                int: this.props.int,
-                cha: this.props.cha,
-                eid: this.props.eid
-
-            }]);
+            data.employees[this.props.id].gid = g.gid;
         }
     }, {
         key: "incWage",
@@ -129,25 +90,9 @@ var Employee = function (_React$Component) {
             }
         }
     }, {
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.update = setInterval(function () {
-                _this2.setState(Object.assign({}, _this2.state, {
-                    morale: data.employees[_this2.props.id].morale
-                }));
-            }, 1);
-        }
-    }, {
-        key: "componentWillUnmount",
-        value: function componentWillUnmount() {
-            clearInterval(this.update);
-        }
-    }, {
         key: "render",
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
             var tasks = void 0;
             var groups = void 0;
@@ -156,23 +101,22 @@ var Employee = function (_React$Component) {
                 groups = data.groups.map(function (g, index) {
                     return React.createElement(
                         "div",
-                        { className: "dropdown", key: index, onClick: _this3.assignGroup.bind(_this3, g) },
+                        { className: "dropdown", key: index, onClick: _this2.assignGroup.bind(_this2, g) },
                         g.name
                     );
                 });
             }
 
             if (this.state.showTasks) {
-                tasks = data.projects.map(function (p, index) {
-                    return p.tasks.map(function (t, idx) {
-                        return React.createElement(
-                            "div",
-                            { className: "dropdown", key: index + idx, onClick: _this3.assignTask.bind(_this3, t) },
-                            p.name,
-                            ": ",
-                            t.name
-                        );
-                    });
+
+                data.tasks.map(function (t, idx) {
+                    return React.createElement(
+                        "div",
+                        { className: "dropdown", key: idx, onClick: _this2.assignTask.bind(_this2, t) },
+                        t.pid,
+                        ": ",
+                        t.name
+                    );
                 });
             }
 

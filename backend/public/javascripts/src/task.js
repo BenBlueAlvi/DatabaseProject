@@ -7,7 +7,6 @@ class Task extends React.Component {
     super(props);
     //setup state
    this.state = {
-       employees: data.projects[this.props.pid].tasks[this.props.id].assignees,
        progress: 0,
        selected: false
    }
@@ -19,8 +18,7 @@ class Task extends React.Component {
     this.update = setInterval(()=>{
         this.setState({
             ...this.state,
-            employees: data.projects[this.props.pid].tasks[this.props.id].assignees,
-            progress: data.projects[this.props.pid].tasks[this.props.id].progress
+            progress: data.tasks[this.props.id].progress
         })
         
     }
@@ -45,12 +43,22 @@ class Task extends React.Component {
     //set up dropdown stuff
     if (this.state.selected){
         //todo clear assignies after assignment
-        let assignees = this.state.employees.map((e, index) => (
-            <div>
-                <div>{index}: {e.name}</div>
-            </div>
-            
-            ));
+        let assignees = [];
+        let index = 0;
+        for (let e of data.employees){
+            for (let t of data.tasks){
+                if (e.tid == t.tid){
+                    assignees.push(
+                        <div>
+                            <div>{index}: {e.name}</div>
+                        </div>
+                    )
+                    index++;
+                }
+            }
+        }
+
+        
 
         info = <div>
         <div>Assigned employees</div>

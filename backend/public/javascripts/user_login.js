@@ -35,6 +35,16 @@ var UserLogin = function (_React$Component) {
     key: 'login',
     value: function login(event) {
       window.location.href = "/game.html";
+      fetch("/auth", {
+        method: "POST",
+        body: JSON.stringify(this.state)
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        return console.log(data);
+      }).catch(function (err) {
+        return console.log(err);
+      });
     }
   }, {
     key: 'register',

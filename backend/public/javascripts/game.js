@@ -54,18 +54,37 @@ var Game = function (_React$Component) {
     }, {
         key: "addGroup",
         value: function addGroup() {
+
             if (this.state.groupInput != "") {
                 data.groups.push({
                     name: this.state.groupInput,
-                    members: []
+                    gid: data.maxGid
                 });
+                data.maxGid++;
+                console.log(data.maxGid);
+                var groups = [];
+                for (var g = 1; g < data.groups.length; g++) {
+                    groups.push(React.createElement(Group, { key: g, id: g, name: data.groups[g].name, "delete": this.delGroup.bind(this, g) }));
+                }
+
                 this.setState(Object.assign({}, this.state, {
                     groupInput: "",
-                    groups: data.groups.map(function (e, index) {
-                        return React.createElement(Group, { key: index, id: index, name: e.name });
-                    })
+                    groups: groups
                 }));
             }
+        }
+    }, {
+        key: "delGroup",
+        value: function delGroup(id) {
+            data.groups.splice(id, 1);
+            var groups = [];
+            for (var g = 1; g < data.groups.length; g++) {
+                groups.push(React.createElement(Group, { key: g, id: g, name: data.groups[g].name, "delete": this.delGroup.bind(this, g) }));
+            }
+            this.setState(Object.assign({}, this.state, {
+                groupInput: "",
+                groups: groups
+            }));
         }
     }, {
         key: "onGroupInputUpdate",
