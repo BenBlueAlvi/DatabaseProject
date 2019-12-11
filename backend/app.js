@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var db;
 app.use((req, res, next) => {
 	let conn = mysql.createConnection({
 		host: config.host,
@@ -25,23 +26,19 @@ app.use((req, res, next) => {
 		password: config.password,
 		database: config.dbname
 	});
-	conn.connect((ERR) => {
+	conn.connect((err) => {
 		if (err) return next(err);
-		req.db = conn;
+		db = conn;
 		next();
 	})
 });
 
-
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/test', function(req, res, next) {
-	console.warn("in test");
-	req.db.query('SELECT * FROM Suppliers',
+app.get('/test', function(req, res, next) {
+	db.query('SELECT * FROM Suppliers',
 		(err, results) => {
-			if (err) return next(err);
-			res.render('index', { title: 'Express' });
+			res.status(200).send(JSON.stringify(results));
 		}
 	);
 });
