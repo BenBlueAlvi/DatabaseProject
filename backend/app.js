@@ -18,6 +18,12 @@ var db = mysql.createConnection({
 	password: config.password,
 	database: config.dbname
 });
+db.connect(function(err) {
+	if (err) {
+		return console.error('error on connecting to db: ' + err.message);
+	}
+	console.log('connected to the db.');
+});
 
 var app = express();
 
@@ -27,7 +33,7 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -35,13 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.get('/test', function(req, res, next) {
-	db.query('SELECT * FROM Suppliers',
-		(err, results) => {
-			res.status(200).send(JSON.stringify(results));
-		}
-	);
-});
+
 
 function goodLogin(uname, pass, table) {
 	for (val in table) {
@@ -53,11 +53,13 @@ function goodLogin(uname, pass, table) {
 }
 
 app.post('/auth', function(req, res, next) {
-	var username = req.body.username;
-	var password = req.body.username;
+	console.log(req.body);
+	var username = req.username;
+	var password = req.password;
+	res.test= 1;
 
 	if (username && password) {
-		db.query("SELECT * FROM Manager",
+		db.query("SELECT * FROM 'Manager'",
 			(err, results) => {
 				if (goodLogin(username, password, results)) {
 					req.session.loggedin = true;
@@ -73,8 +75,6 @@ app.post('/auth', function(req, res, next) {
 		res.send('Please enter a Username and Password!');
 		res.end();
 	}
-
-	res.status(200);
 });
 
 app.get('/gameData', function (req, res, next) {
@@ -89,6 +89,36 @@ app.get('/gameData', function (req, res, next) {
 		});
 	} else {
 		res.redirect('/');
+	}
+});
+
+app.post('/register', function(req,res,next) {
+	var username = req.body.username;
+	var password = req.body.password;
+
+	if (username && password) {
+		db.query("SELECT * FROM Manager WHERE Login = ?", [username], (err, results) => {
+			if (results.length > 0) {
+				res.status(200).send("Sorry, that username is already taken!");
+			} else {
+				db.query("INSERT INTO Manager(Login, Password) VALUES('?', '?')", [username, password], (err, results) => {
+					if (err) {
+						return console.error(err.message);
+					}
+				});
+			}
+		});
+	}
+});
+
+app.post('newEmployee', function(req, res, next) {
+	if (req.session.loggedin) {
+		db.query("INSERT INTO Manager('name', 'str', 'int', 'cha', 'description', 'wage', 'Login', 'Gid') VALUES('?', '?', '?', '?', '?', '?', '?')",
+			[req.body.name, req.body.str, req.body.int, req.body.cha, req.body.desc, req.body.wage, req.session.username, req.body.gid], (err, results) => {
+			if (err) {
+				return console.error(err.message);
+			}
+		});
 	}
 });
 
