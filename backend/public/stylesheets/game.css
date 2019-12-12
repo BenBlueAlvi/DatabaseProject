@@ -2,25 +2,27 @@
     border: 2px solid black;
     padding: 10px;
     align-items: center;
+    margin: 5px;
 
 }
 
 .employee-name{
     text-align: center;
-    border: 2px solid green;
+    border: 2px solid blue;
     display:flexbox;
+    
 
 }
 
 .employee-assignments{
-    display:flexbox;
+    display:block;
     align-items: center;
     text-align: center;
     margin-top: 10px;
 }
 
 .employee-assign{
-    display:inline;
+    display:block;
     
     text-align: center;
     border: 2px solid black;
@@ -72,13 +74,38 @@
 .projects{
 
     border: 2px solid blue;
-    width: 50%;
+    width: 33%;
+    background-color: steelblue;
 }
 
 .employees{
-    width: 50%;
+    width: 33%;
+    border: 2px solid blue;
+    background-color: slategray;
+}
+.groups{
+    border: 2px solid blue;
+    background-color: lightseagreen;
+    width: 33%;
 }
 
+.money{
+    color: green;
+    text-align: center;
+    text-emphasis: bold;
+}
+
+.col{
+    text-align: center;
+    border: 2px solid black;
+    margin: 5px;
+    padding: 5px;
+}
+
+.proposals{
+    background-color: darkolivegreen;
+    border: 2px solid blue;
+}
 
 
 .content{
@@ -86,9 +113,14 @@
 }
 
 .project{
-    display:flex;
+   
     padding: 10px;
     border: 2px solid black;
+    margin: 5px;
+}
+
+.project-info{
+    display: flex;
 }
 
 .project-progress{
@@ -108,12 +140,33 @@
 }
 
 .task{
-    display: flex;
+    display: block;
     padding: 10px;
     border: 2px solid black;
+    margin: 5px;
+    background-color: slateblue;
 }
 
 .group{
     border: 2px solid darkblue;
     padding: 10px;
+    margin: 5px;
 }
+
+.group-nameInput{
+    width: 100%;
+   
+}
+
+.applicant{
+    border: 2px solid black;
+    margin: 5px;
+    padding: 10px;
+
+}
+
+button{
+    background-color: white;
+}
+
+

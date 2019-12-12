@@ -8,9 +8,12 @@ class Group extends React.Component {
     //setup state
    this.state = {
        selected: false,
-       show: true
+       assign: false,
+       show: true,
+       managerName: "none"
    }
    this.select = this.select.bind(this);
+   this.assign = this.assign.bind(this);
   
  
   }
@@ -20,9 +23,30 @@ class Group extends React.Component {
   select(){
       this.setState({
         ...this.state,
-        selected: !this.state.selected
+        selected: !this.state.selected,
+        assign: false
       })
       
+  }
+
+  assign(){
+      this.setState(
+          {
+            ...this.state,
+            selected: false,
+            assign: !this.state.assign
+          }
+      )
+  }
+
+  assignManager(e){
+      data.groups[this.props.id].eid = e.eid
+      this.setState(
+        {
+          ...this.state,
+         managerName: e.name
+        }
+    ) 
   }
 
   
@@ -36,18 +60,17 @@ class Group extends React.Component {
             let members = [];
             let index = 0;
             for (let e of data.employees){
-                for (let g of data.groups){
-                    console.log(e.gid, g.gid)
+               
                     
-                    if (e.gid == g.gid){
-                        members.push(
-                            <div>
-                                <div>{index}: {e.name}</div>
-                            </div>
-                        );
-                        index++;
-                    }
+                if (e.gid == data.groups[this.props.id].gid){
+                    members.push(
+                        <div>
+                            <div>{index}: {e.name}</div>
+                        </div>
+                    );
+                    index++;
                 }
+                
             }
             
     
@@ -58,14 +81,28 @@ class Group extends React.Component {
         } else{
             info = <div></div>
         }
-    
+        let manager;
+        if (this.state.assign){
+            let emps = []
+            for (let e of data.employees){
+                emps.push(<div className="dropdown" onClick={this.assignManager.bind(this, e)}>{e.name}</div>)
+            }
+            manager = <div>{emps}</div>
+        } else {
+            manager = <div></div>
+        }
+
+       
+
         return (
             <div className="group">
                 <div>{this.props.name}</div>
+                <div>Manager: {this.state.managerName}</div>
                 <button onClick={this.select}>Expand</button>
                 <button onClick={this.props.delete}>Delete</button>
-                <button onClick={this.props.delete}>Assign Manager</button>
+                <button onClick={this.assign}>Assign Manager</button>
                 {info}
+                {manager}
             </div>
         );
     }

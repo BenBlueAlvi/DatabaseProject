@@ -76,6 +76,33 @@ var Game = function (_React$Component) {
     }, {
         key: "delGroup",
         value: function delGroup(id) {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = data.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var e = _step.value;
+
+                    if (e.gid == data.groups[id].gid) {
+                        e.gid = -1;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
             data.groups.splice(id, 1);
             var groups = [];
             for (var g = 1; g < data.groups.length; g++) {
@@ -105,7 +132,7 @@ var Game = function (_React$Component) {
             });
 
             var projectProposals = data.projectProposals.map(function (p, index) {
-                return React.createElement(Proposal, { key: index, id: index, name: p.name, desc: p.desc });
+                return React.createElement(Proposal, { key: index, id: index, name: p[0].name, desc: p[0].desc });
             });
 
             var applicants = data.applicants.map(function (p, index) {
@@ -115,28 +142,44 @@ var Game = function (_React$Component) {
             return React.createElement(
                 "div",
                 { className: "game" },
-                "$",
-                this.state.money,
+                React.createElement(
+                    "h1",
+                    { className: "money" },
+                    "$",
+                    this.state.money
+                ),
                 React.createElement(
                     "div",
                     { className: "content" },
                     React.createElement(
                         "div",
                         { className: "projects" },
-                        "Projects",
+                        React.createElement(
+                            "h2",
+                            { className: "col" },
+                            "Projects"
+                        ),
                         projects
                     ),
                     React.createElement(
                         "div",
                         { className: "employees" },
-                        "Employees",
+                        React.createElement(
+                            "h2",
+                            { className: "col" },
+                            "Employees"
+                        ),
                         employees
                     ),
                     React.createElement(
                         "div",
                         { className: "groups" },
-                        "Groups",
-                        React.createElement("input", { type: "text", value: this.state.groupInput, onChange: this.onGroupInputUpdate }),
+                        React.createElement(
+                            "h2",
+                            { className: "col" },
+                            "Groups"
+                        ),
+                        React.createElement("input", { className: "group-nameInput", type: "text", value: this.state.groupInput, onChange: this.onGroupInputUpdate }),
                         React.createElement(
                             "button",
                             { onClick: this.addGroup },
@@ -151,13 +194,21 @@ var Game = function (_React$Component) {
                     React.createElement(
                         "div",
                         { className: "project-pro" },
-                        "Project Proposals",
+                        React.createElement(
+                            "h2",
+                            { className: "col" },
+                            "Project Proposals"
+                        ),
                         projectProposals
                     ),
                     React.createElement(
                         "div",
                         { className: "employee-pro" },
-                        "Applying Employees",
+                        React.createElement(
+                            "h2",
+                            { className: "col" },
+                            "Applying Employees"
+                        ),
                         applicants
                     )
                 )

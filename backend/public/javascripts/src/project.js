@@ -44,17 +44,17 @@ class Project extends React.Component {
     
        
     let tasks = [];
-    let index = 0;
-    for (let p of data.projects){
-        for (let t of data.tasks){
-            if (p.pid == t.tid){
-                tasks.push(
-                    <Task key={index} id={index} pid={this.props.id} name={t.name}/>
-                );
-                index++;
-            }
+
+   
+    for (let t =1; t < data.tasks.length; t++){
+        if (data.projects[this.props.id].pid == data.tasks[t].pid){
+            tasks.push(
+                <Task key={t} id={t} name={data.tasks[t].name}/>
+            );
+         
         }
     }
+    
 
     let info;
     if (this.state.selected){
@@ -68,8 +68,10 @@ class Project extends React.Component {
 
     return (
         <div className="project">
-             <div className="project-name">{this.props.name}</div>
-             <div className="project-progress">{this.state.progress}</div>
+            <div className="project-info">
+                <div className="project-name">{this.props.name}</div>
+                <div className="project-progress">{this.state.progress.toFixed(2)}%</div>
+             </div>
              <button className="project-dropdown-button" onClick={this.select}>expand</button>
              <div className="project-dropdown">
                 {info}

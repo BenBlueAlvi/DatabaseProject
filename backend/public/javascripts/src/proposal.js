@@ -24,13 +24,19 @@ class Project extends React.Component {
   }
 
   accept(){
-      data.projects.push(data.projectProposals[this.props.id]);
+     
+      data.projects.push(data.projectProposals[this.props.id][0]);
+      for (let t of data.projectProposals[this.props.id][1]){
+        
+        data.tasks.push(t);
+      }
+      
       data.projectProposals.splice(this.props.id, 1)
   }
   
   
   render() {
-    let tasks = data.projectProposals[this.props.id].tasks.map((t, index) => (
+    let tasks = data.projectProposals[this.props.id][1].map((t, index) => (
         <Task key={index} id={index} pid={this.props.id} name={t.name}/>));
 
     let info;

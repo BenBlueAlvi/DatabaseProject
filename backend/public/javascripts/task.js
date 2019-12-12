@@ -56,6 +56,7 @@ var Task = function (_React$Component) {
         value: function render() {
             var info = void 0;
             //set up dropdown stuff
+
             if (this.state.selected) {
                 //todo clear assignies after assignment
                 var assignees = [];
@@ -67,42 +68,21 @@ var Task = function (_React$Component) {
                 try {
                     for (var _iterator = data.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                         var e = _step.value;
-                        var _iteratorNormalCompletion2 = true;
-                        var _didIteratorError2 = false;
-                        var _iteratorError2 = undefined;
 
-                        try {
-                            for (var _iterator2 = data.tasks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                                var t = _step2.value;
 
-                                if (e.tid == t.tid) {
-                                    assignees.push(React.createElement(
-                                        "div",
-                                        null,
-                                        React.createElement(
-                                            "div",
-                                            null,
-                                            index,
-                                            ": ",
-                                            e.name
-                                        )
-                                    ));
-                                    index++;
-                                }
-                            }
-                        } catch (err) {
-                            _didIteratorError2 = true;
-                            _iteratorError2 = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                    _iterator2.return();
-                                }
-                            } finally {
-                                if (_didIteratorError2) {
-                                    throw _iteratorError2;
-                                }
-                            }
+                        if (e.tid == data.tasks[this.props.id].tid) {
+                            assignees.push(React.createElement(
+                                "div",
+                                null,
+                                React.createElement(
+                                    "div",
+                                    null,
+                                    index,
+                                    ": ",
+                                    e.name
+                                )
+                            ));
+                            index++;
                         }
                     }
                 } catch (err) {
@@ -145,7 +125,8 @@ var Task = function (_React$Component) {
                 React.createElement(
                     "div",
                     { className: "task-progress" },
-                    this.state.progress
+                    this.state.progress.toFixed(2),
+                    "%"
                 ),
                 React.createElement(
                     "button",

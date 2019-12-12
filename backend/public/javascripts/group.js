@@ -21,9 +21,12 @@ var Group = function (_React$Component) {
 
         _this.state = {
             selected: false,
-            show: true
+            assign: false,
+            show: true,
+            managerName: "none"
         };
         _this.select = _this.select.bind(_this);
+        _this.assign = _this.assign.bind(_this);
 
         return _this;
     }
@@ -32,7 +35,24 @@ var Group = function (_React$Component) {
         key: "select",
         value: function select() {
             this.setState(Object.assign({}, this.state, {
-                selected: !this.state.selected
+                selected: !this.state.selected,
+                assign: false
+            }));
+        }
+    }, {
+        key: "assign",
+        value: function assign() {
+            this.setState(Object.assign({}, this.state, {
+                selected: false,
+                assign: !this.state.assign
+            }));
+        }
+    }, {
+        key: "assignManager",
+        value: function assignManager(e) {
+            data.groups[this.props.id].eid = e.eid;
+            this.setState(Object.assign({}, this.state, {
+                managerName: e.name
             }));
         }
     }, {
@@ -52,44 +72,21 @@ var Group = function (_React$Component) {
                     try {
                         for (var _iterator = data.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                             var e = _step.value;
-                            var _iteratorNormalCompletion2 = true;
-                            var _didIteratorError2 = false;
-                            var _iteratorError2 = undefined;
 
-                            try {
-                                for (var _iterator2 = data.groups[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                                    var g = _step2.value;
 
-                                    console.log(e.gid, g.gid);
-
-                                    if (e.gid == g.gid) {
-                                        members.push(React.createElement(
-                                            "div",
-                                            null,
-                                            React.createElement(
-                                                "div",
-                                                null,
-                                                index,
-                                                ": ",
-                                                e.name
-                                            )
-                                        ));
-                                        index++;
-                                    }
-                                }
-                            } catch (err) {
-                                _didIteratorError2 = true;
-                                _iteratorError2 = err;
-                            } finally {
-                                try {
-                                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                        _iterator2.return();
-                                    }
-                                } finally {
-                                    if (_didIteratorError2) {
-                                        throw _iteratorError2;
-                                    }
-                                }
+                            if (e.gid == data.groups[this.props.id].gid) {
+                                members.push(React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement(
+                                        "div",
+                                        null,
+                                        index,
+                                        ": ",
+                                        e.name
+                                    )
+                                ));
+                                index++;
                             }
                         }
                     } catch (err) {
@@ -120,6 +117,46 @@ var Group = function (_React$Component) {
                 } else {
                     info = React.createElement("div", null);
                 }
+                var manager = void 0;
+                if (this.state.assign) {
+                    var emps = [];
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = data.employees[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var _e = _step2.value;
+
+                            emps.push(React.createElement(
+                                "div",
+                                { className: "dropdown", onClick: this.assignManager.bind(this, _e) },
+                                _e.name
+                            ));
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+
+                    manager = React.createElement(
+                        "div",
+                        null,
+                        emps
+                    );
+                } else {
+                    manager = React.createElement("div", null);
+                }
 
                 return React.createElement(
                     "div",
@@ -128,6 +165,12 @@ var Group = function (_React$Component) {
                         "div",
                         null,
                         this.props.name
+                    ),
+                    React.createElement(
+                        "div",
+                        null,
+                        "Manager: ",
+                        this.state.managerName
                     ),
                     React.createElement(
                         "button",
@@ -141,10 +184,11 @@ var Group = function (_React$Component) {
                     ),
                     React.createElement(
                         "button",
-                        { onClick: this.props.delete },
+                        { onClick: this.assign },
                         "Assign Manager"
                     ),
-                    info
+                    info,
+                    manager
                 );
             } else {
                 return React.createElement("div", null);

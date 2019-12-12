@@ -41,21 +41,22 @@ class Task extends React.Component {
   render() {
     let info;
     //set up dropdown stuff
+   
     if (this.state.selected){
         //todo clear assignies after assignment
         let assignees = [];
         let index = 0;
         for (let e of data.employees){
-            for (let t of data.tasks){
-                if (e.tid == t.tid){
-                    assignees.push(
-                        <div>
-                            <div>{index}: {e.name}</div>
-                        </div>
-                    )
-                    index++;
-                }
+            
+            if (e.tid == data.tasks[this.props.id].tid){
+                assignees.push(
+                    <div>
+                        <div>{index}: {e.name}</div>
+                    </div>
+                )
+                index++;
             }
+            
         }
 
         
@@ -71,7 +72,7 @@ class Task extends React.Component {
     return (
         <div className="task">
              <div className="task-name">{this.props.name}</div>
-             <div className="task-progress">{this.state.progress}</div>
+             <div className="task-progress">{this.state.progress.toFixed(2)}%</div>
              <button className="project-dropdown-button" onClick={this.select}>expand</button>
              <div className="project-dropdown">
                 {info}

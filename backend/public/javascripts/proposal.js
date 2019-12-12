@@ -38,7 +38,34 @@ var Project = function (_React$Component) {
     }, {
         key: "accept",
         value: function accept() {
-            data.projects.push(data.projectProposals[this.props.id]);
+
+            data.projects.push(data.projectProposals[this.props.id][0]);
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = data.projectProposals[this.props.id][1][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var t = _step.value;
+
+
+                    data.tasks.push(t);
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
             data.projectProposals.splice(this.props.id, 1);
         }
     }, {
@@ -46,7 +73,7 @@ var Project = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var tasks = data.projectProposals[this.props.id].tasks.map(function (t, index) {
+            var tasks = data.projectProposals[this.props.id][1].map(function (t, index) {
                 return React.createElement(Task, { key: index, id: index, pid: _this2.props.id, name: t.name });
             });
 
