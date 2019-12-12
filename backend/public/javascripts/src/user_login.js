@@ -19,13 +19,14 @@ class UserLogin extends React.Component {
   }
 
   login(event){
-    window.location.href = "/game.html";
+   console.log(JSON.stringify(this.state))
     fetch("/auth", {
       method: "POST",
       body: JSON.stringify(this.state)
-    }).then((res) => res.json())
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err))
+    }).then((res)=>{
+      //if bad username/password
+      alert(res);
+    })
   }
 
   register(event){

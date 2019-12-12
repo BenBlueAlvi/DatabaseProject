@@ -31,10 +31,9 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
+
 app.get('/test', function(req, res, next) {
 	db.query('SELECT * FROM Suppliers',
 		(err, results) => {
@@ -91,6 +90,8 @@ app.get('/gameData', function (req, res, next) {
 		res.redirect('/');
 	}
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
