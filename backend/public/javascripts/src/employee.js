@@ -1,18 +1,18 @@
 'use strict';
 
-import data from "./data.js";
+
 
 class Employee extends React.Component {
   constructor(props) {
     super(props);
     //setup state
     this.state = {
-        group: data.groups[0],
-        task: data.tasks[0],
+        group: null,
+        task: null,
         showGroups: false,
         showTasks: false,
-        wage: data.employees[this.props.id].wage,
-        morale: data.employees[this.props.id].morale
+        wage: window.gameData.employees[this.props.id].wage,
+        morale: window.gameData.employees[this.props.id].morale
         
     }
     this.groupDropdown = this.groupDropdown.bind(this);
@@ -46,7 +46,7 @@ class Employee extends React.Component {
      
 
       
-     data.employees[this.props.id].tid = t.tid
+      window.gameData.employees[this.props.id].Tid = t.Tid
   }
 
   assignGroup(g){
@@ -54,25 +54,25 @@ class Employee extends React.Component {
         ...this.state,
         group: g
     })
-    data.employees[this.props.id].gid = g.gid
+    window.gameData.employees[this.props.id].Gid = g.Gid
   }
 
   incWage(){
     
-    data.employees[this.props.id].wage += 1;
+    window.gameData.employees[this.props.id].wage += 1;
 
     this.setState({
         ...this.state,
-        wage: data.employees[this.props.id].wage
+        wage: window.gameData.employees[this.props.id].wage
     })
   }
 
   decWage(){
     if (this.state.wage > 0){
-        data.employees[this.props.id].wage -= 1;
+        window.gameData.employees[this.props.id].wage -= 1;
         this.setState({
             ...this.state,
-            wage: data.employees[this.props.id].wage
+            wage: window.gameData.employees[this.props.id].wage
         })
     }
     
@@ -87,7 +87,7 @@ class Employee extends React.Component {
     let groups;
 
     if (this.state.showGroups){
-        groups = data.groups.map((g, index) => (
+        groups = window.gameData.groups.map((g, index) => (
             
             <div className="dropdown" key={index} onClick={this.assignGroup.bind(this, g)}>
                 {g.name}
@@ -98,9 +98,9 @@ class Employee extends React.Component {
 
     let idx = 0
     if (this.state.showTasks){
-       for (let t of data.tasks){
-           for (let p of data.projects){
-               if (t.pid == p.pid){
+       for (let t of window.gameData.tasks){
+           for (let p of window.gameData.projects){
+               if (t.Pid == p.Pid){
                     tasks.push(
                     <div className="dropdown" key={idx} onClick={this.assignTask.bind(this, t)}>
                         {p.name}: {t.name}
@@ -114,29 +114,38 @@ class Employee extends React.Component {
     }
 
     let morale = ""
-    if(data.employees[this.props.id].morale < 0 && data.employees[this.props.id].morale >= -100){
+    if(window.gameData.employees[this.props.id].morale < 0 && window.gameData.employees[this.props.id].morale >= -100){
         morale = "low";
-    } else if(data.employees[this.props.id].morale < -100 && data.employees[this.props.id].morale >= -200){
+    } else if(window.gameData.employees[this.props.id].morale < -100 && window.gameData.employees[this.props.id].morale >= -200){
         morale = "dismal";
-    } else if(data.employees[this.props.id].morale < -200 && data.employees[this.props.id].morale >= -300){
+    } else if(window.gameData.employees[this.props.id].morale < -200 && window.gameData.employees[this.props.id].morale >= -300){
         morale = "miserable";
-    } else if(data.employees[this.props.id].morale >= 0 && data.employees[this.props.id].morale < 100){
+    } else if(window.gameData.employees[this.props.id].morale >= 0 && window.gameData.employees[this.props.id].morale < 100){
         morale = "high";
-    } else if(data.employees[this.props.id].morale >= 100 && data.employees[this.props.id].morale < 200){
+    } else if(window.gameData.employees[this.props.id].morale >= 100 && window.gameData.employees[this.props.id].morale < 200){
         morale = "great";
-    } else if(data.employees[this.props.id].morale >= 200 && data.employees[this.props.id].morale < 300){
+    } else if(window.gameData.employees[this.props.id].morale >= 200 && window.gameData.employees[this.props.id].morale < 300){
         morale = "elated";
-    }  else if(data.employees[this.props.id].morale >= 300){
+    }  else if(window.gameData.employees[this.props.id].morale >= 300){
         morale = "extreme";
     }
 
+    let ggroup = "None"
+    if (this.state.group){
+        ggroup = this.state.group.name
+    }
+
+    let ttask = "None"
+    if (this.state.task){
+        ttask = this.state.task.name
+    }
 
     return (
         <div className="employee">
             <div className="employee-name">{this.props.name}</div>
             <div className="employee-d">
                 <div className="employee-desc">{this.props.desc}</div>
-                <div className="employee-morale">Morale: {data.employees[this.props.id].morale}</div>
+                <div className="employee-morale">Morale: {window.gameData.employees[this.props.id].morale}</div>
                 <div className="employee-wage">
                     <button onClick={this.incWage}>&uarr;</button>
                     <p className="employee-wage-value">${this.state.wage}</p>
@@ -146,13 +155,13 @@ class Employee extends React.Component {
             
             <div className="employee-assignments">
                 <div className="employee-assign">
-                    Assigned Group: {this.state.group.name}
+                    Assigned Group: {ggroup}
                     <button onClick={this.groupDropdown}>Assign</button>
                     
                 </div>
                 {groups}
                 <div className="employee-assign">
-                    Assigned Task: {this.state.task.name}
+                    Assigned Task: {ttask}
                     <button onClick={this.taskDropdown}>Assign</button>
                     
                 </div>

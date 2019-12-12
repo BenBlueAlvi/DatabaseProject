@@ -1,5 +1,5 @@
 'use strict';
-import data from "./data.js"
+
 import Task from "./task.js";
 class Project extends React.Component {
   constructor(props) {
@@ -25,18 +25,18 @@ class Project extends React.Component {
 
   accept(){
      
-      data.projects.push(data.projectProposals[this.props.id][0]);
-      for (let t of data.projectProposals[this.props.id][1]){
+    window.gameData.projects.push(window.gameData.projectProposals[this.props.id][0]);
+      for (let t of window.gameData.projectProposals[this.props.id][1]){
         
-        data.tasks.push(t);
+        window.gameData.tasks.push(t);
       }
       
-      data.projectProposals.splice(this.props.id, 1)
+      window.gameData.projectProposals.splice(this.props.id, 1)
   }
   
   
   render() {
-    let tasks = data.projectProposals[this.props.id][1].map((t, index) => (
+    let tasks = window.gameData.projectProposals[this.props.id][1].map((t, index) => (
         <Task key={index} id={index} pid={this.props.id} name={t.name}/>));
 
     let info;

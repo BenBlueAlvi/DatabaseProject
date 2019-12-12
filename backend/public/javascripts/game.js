@@ -15,6 +15,8 @@ import Group from "./group.js";
 import Proposal from "./proposal.js";
 import Applicant from "./applicant.js";
 
+console.log(window.gameData);
+
 var Game = function (_React$Component) {
     _inherits(Game, _React$Component);
 
@@ -25,7 +27,7 @@ var Game = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, props));
 
         _this.state = {
-            money: data.money,
+            money: 0,
             groupInput: ""
         };
 
@@ -41,8 +43,9 @@ var Game = function (_React$Component) {
             var _this2 = this;
 
             this.update = setInterval(function () {
+
                 _this2.setState(Object.assign({}, _this2.state, {
-                    money: data.money
+                    money: window.gameData.money
                 }));
             }, 1000);
         }
@@ -56,15 +59,15 @@ var Game = function (_React$Component) {
         value: function addGroup() {
 
             if (this.state.groupInput != "") {
-                data.groups.push({
+                window.gameData.groups.push({
                     name: this.state.groupInput,
-                    gid: data.maxGid
+                    gid: window.gameData.maxGid
                 });
-                data.maxGid++;
-                console.log(data.maxGid);
+                window.gameData.maxGid++;
+                console.log(window.gameData.maxGid);
                 var groups = [];
-                for (var g = 1; g < data.groups.length; g++) {
-                    groups.push(React.createElement(Group, { key: g, id: g, name: data.groups[g].name, "delete": this.delGroup.bind(this, g) }));
+                for (var g = 0; g < window.gameData.groups.length; g++) {
+                    groups.push(React.createElement(Group, { key: g, id: g, name: window.gameData.groups[g].name, "delete": this.delGroup.bind(this, g) }));
                 }
 
                 this.setState(Object.assign({}, this.state, {
@@ -84,7 +87,7 @@ var Game = function (_React$Component) {
                 for (var _iterator = data.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     var e = _step.value;
 
-                    if (e.gid == data.groups[id].gid) {
+                    if (e.gid == window.gameData.groups[id].Gid) {
                         e.gid = -1;
                     }
                 }
@@ -103,10 +106,10 @@ var Game = function (_React$Component) {
                 }
             }
 
-            data.groups.splice(id, 1);
+            window.gameData.groups.splice(id, 1);
             var groups = [];
-            for (var g = 1; g < data.groups.length; g++) {
-                groups.push(React.createElement(Group, { key: g, id: g, name: data.groups[g].name, "delete": this.delGroup.bind(this, g) }));
+            for (var g = 0; g < window.gameData.groups.length; g++) {
+                groups.push(React.createElement(Group, { key: g, id: g, name: window.gameData.groups[g].name, "delete": this.delGroup.bind(this, g) }));
             }
             this.setState(Object.assign({}, this.state, {
                 groupInput: "",
@@ -123,96 +126,105 @@ var Game = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            var projects = data.projects.map(function (p, index) {
-                return React.createElement(Project, { key: index, id: index, name: p.name, desc: p.desc });
-            });
 
-            var employees = data.employees.map(function (e, index) {
-                return React.createElement(Employee, { key: index, id: index, name: e.name, int: e.int, cha: e.cha, str: e.str, desc: e.desc, eid: e.eid });
-            });
+            if (window.gameData && window.gameData.ready) {
+                var projects = window.gameData.projects.map(function (p, index) {
+                    return React.createElement(Project, { key: index, id: index, name: p.name, desc: p.desc });
+                });
 
-            var projectProposals = data.projectProposals.map(function (p, index) {
-                return React.createElement(Proposal, { key: index, id: index, name: p[0].name, desc: p[0].desc });
-            });
+                var employees = window.gameData.employees.map(function (e, index) {
+                    return React.createElement(Employee, { key: index, id: index, name: e.name, int: e.int, cha: e.cha, str: e.str, desc: e.desc, eid: e.Eid });
+                });
+                var projectProposals = React.createElement("div", null);
+                if (window.gameData.projectProposals) {
+                    projectProposals = window.gameData.projectProposals.map(function (p, index) {
+                        return React.createElement(Proposal, { key: index, id: index, name: p[0].name, desc: p[0].desc });
+                    });
+                }
+                var applicants = React.createElement("div", null);
+                if (window.gameData.applicants) {
+                    applicants = window.gameData.applicants.map(function (p, index) {
+                        return React.createElement(Applicant, { key: index, id: index, name: p.name, desc: p.desc });
+                    });
+                }
 
-            var applicants = data.applicants.map(function (p, index) {
-                return React.createElement(Applicant, { key: index, id: index, name: p.name, desc: p.desc });
-            });
-
-            return React.createElement(
-                "div",
-                { className: "game" },
-                React.createElement(
-                    "h1",
-                    { className: "money" },
-                    "$",
-                    this.state.money
-                ),
-                React.createElement(
+                return React.createElement(
                     "div",
-                    { className: "content" },
+                    { className: "game" },
                     React.createElement(
-                        "div",
-                        { className: "projects" },
-                        React.createElement(
-                            "h2",
-                            { className: "col" },
-                            "Projects"
-                        ),
-                        projects
+                        "h1",
+                        { className: "money" },
+                        "$",
+                        window.gameData.money
                     ),
                     React.createElement(
                         "div",
-                        { className: "employees" },
+                        { className: "content" },
                         React.createElement(
-                            "h2",
-                            { className: "col" },
-                            "Employees"
+                            "div",
+                            { className: "projects" },
+                            React.createElement(
+                                "h2",
+                                { className: "col" },
+                                "Projects"
+                            ),
+                            projects
                         ),
-                        employees
+                        React.createElement(
+                            "div",
+                            { className: "employees" },
+                            React.createElement(
+                                "h2",
+                                { className: "col" },
+                                "Employees"
+                            ),
+                            employees
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "groups" },
+                            React.createElement(
+                                "h2",
+                                { className: "col" },
+                                "Groups"
+                            ),
+                            React.createElement("input", { className: "group-nameInput", type: "text", value: this.state.groupInput, onChange: this.onGroupInputUpdate }),
+                            React.createElement(
+                                "button",
+                                { onClick: this.addGroup },
+                                "+"
+                            ),
+                            this.state.groups
+                        )
                     ),
                     React.createElement(
                         "div",
-                        { className: "groups" },
+                        { className: "proposals" },
                         React.createElement(
-                            "h2",
-                            { className: "col" },
-                            "Groups"
+                            "div",
+                            { className: "project-pro" },
+                            React.createElement(
+                                "h2",
+                                { className: "col" },
+                                "Project Proposals"
+                            ),
+                            projectProposals
                         ),
-                        React.createElement("input", { className: "group-nameInput", type: "text", value: this.state.groupInput, onChange: this.onGroupInputUpdate }),
                         React.createElement(
-                            "button",
-                            { onClick: this.addGroup },
-                            "+"
-                        ),
-                        this.state.groups
+                            "div",
+                            { className: "employee-pro" },
+                            React.createElement(
+                                "h2",
+                                { className: "col" },
+                                "Applying Employees"
+                            ),
+                            applicants
+                        )
                     )
-                ),
-                React.createElement(
-                    "div",
-                    { className: "proposals" },
-                    React.createElement(
-                        "div",
-                        { className: "project-pro" },
-                        React.createElement(
-                            "h2",
-                            { className: "col" },
-                            "Project Proposals"
-                        ),
-                        projectProposals
-                    ),
-                    React.createElement(
-                        "div",
-                        { className: "employee-pro" },
-                        React.createElement(
-                            "h2",
-                            { className: "col" },
-                            "Applying Employees"
-                        ),
-                        applicants
-                    )
-                )
-            );
+                );
+            } else {
+                return React.createElement("div", null);
+            }
         }
     }]);
 
@@ -220,4 +232,4 @@ var Game = function (_React$Component) {
 }(React.Component);
 
 var domContainer = document.querySelector('.game-container');
-ReactDOM.render(React.createElement(Game, null), domContainer);
+ReactDOM.render(React.createElement(Game), domContainer);

@@ -8,7 +8,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import data from "./data.js";
 import Task from "./task.js";
 
 var Project = function (_React$Component) {
@@ -39,17 +38,17 @@ var Project = function (_React$Component) {
         key: "accept",
         value: function accept() {
 
-            data.projects.push(data.projectProposals[this.props.id][0]);
+            window.gameData.projects.push(window.gameData.projectProposals[this.props.id][0]);
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;
             var _iteratorError = undefined;
 
             try {
-                for (var _iterator = data.projectProposals[this.props.id][1][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                for (var _iterator = window.gameData.projectProposals[this.props.id][1][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     var t = _step.value;
 
 
-                    data.tasks.push(t);
+                    window.gameData.tasks.push(t);
                 }
             } catch (err) {
                 _didIteratorError = true;
@@ -66,14 +65,14 @@ var Project = function (_React$Component) {
                 }
             }
 
-            data.projectProposals.splice(this.props.id, 1);
+            window.gameData.projectProposals.splice(this.props.id, 1);
         }
     }, {
         key: "render",
         value: function render() {
             var _this2 = this;
 
-            var tasks = data.projectProposals[this.props.id][1].map(function (t, index) {
+            var tasks = window.gameData.projectProposals[this.props.id][1].map(function (t, index) {
                 return React.createElement(Task, { key: index, id: index, pid: _this2.props.id, name: t.name });
             });
 

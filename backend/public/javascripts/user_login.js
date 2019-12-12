@@ -21,6 +21,7 @@ var UserLogin = function (_React$Component) {
       username: '',
       password: ''
     };
+
     //bind all the functions
     _this.onUsernameUpdate = _this.onUsernameUpdate.bind(_this);
     _this.onPasswordUpdate = _this.onPasswordUpdate.bind(_this);
@@ -34,17 +35,24 @@ var UserLogin = function (_React$Component) {
   _createClass(UserLogin, [{
     key: 'login',
     value: function login(event) {
-<<<<<<< HEAD
       console.log(JSON.stringify(this.state));
-=======
-      // window.location.href = "/game.html";
->>>>>>> 6185ddbe1b5a197eeb01e3e9fd0a94e7022785ab
       fetch("/auth", {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+
+        },
+        redirect: 'follow',
         body: JSON.stringify(this.state)
       }).then(function (res) {
-        //if bad username/password
-        alert(res);
+        return res.text();
+      }).then(function (t) {
+        if (t === "allow") {
+          window.location.href = "/game.html";
+        } else {
+          alert(t);
+        }
       });
     }
   }, {

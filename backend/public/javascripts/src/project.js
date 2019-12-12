@@ -1,6 +1,7 @@
 'use strict';
-import data from "./data.js";
+
 import Task from "./task.js";
+var data = window.gameData
 class Project extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +18,7 @@ class Project extends React.Component {
     this.update = setInterval(()=>{
         this.setState({
             ...this.state,
-            progress: data.projects[this.props.id].progress
+            progress: window.gameData.projects[this.props.id].progress
         })
         
     }
@@ -46,10 +47,10 @@ class Project extends React.Component {
     let tasks = [];
 
    
-    for (let t =1; t < data.tasks.length; t++){
-        if (data.projects[this.props.id].pid == data.tasks[t].pid){
+    for (let t =0; t < window.gameData.tasks.length; t++){
+        if (window.gameData.projects[this.props.id].Pid == window.gameData.tasks[t].Pid){
             tasks.push(
-                <Task key={t} id={t} name={data.tasks[t].name}/>
+                <Task key={t} id={t} name={window.gameData.tasks[t].name}/>
             );
          
         }

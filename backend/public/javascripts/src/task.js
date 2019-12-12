@@ -1,13 +1,13 @@
 'use strict';
 
-import data from "./data.js"
+
 
 class Task extends React.Component {
   constructor(props) {
     super(props);
     //setup state
    this.state = {
-       progress: 0,
+       progress: window.gameData.tasks[this.props.id].proj_percent,
        selected: false
    }
    this.select = this.select.bind(this);
@@ -18,7 +18,7 @@ class Task extends React.Component {
     this.update = setInterval(()=>{
         this.setState({
             ...this.state,
-            progress: data.tasks[this.props.id].progress
+            progress: window.gameData.tasks[this.props.id].proj_percent
         })
         
     }
@@ -46,9 +46,9 @@ class Task extends React.Component {
         //todo clear assignies after assignment
         let assignees = [];
         let index = 0;
-        for (let e of data.employees){
+        for (let e of window.gameData.employees){
             
-            if (e.tid == data.tasks[this.props.id].tid){
+            if (e.Tid == window.gameData.tasks[this.props.id].Tid){
                 assignees.push(
                     <div>
                         <div>{index}: {e.name}</div>
@@ -69,10 +69,15 @@ class Task extends React.Component {
         info = <div></div>
     }
 
+    let prog = 0
+    if (this.state.progress){
+        prog = this.state.progress
+    }
+
     return (
         <div className="task">
              <div className="task-name">{this.props.name}</div>
-             <div className="task-progress">{this.state.progress.toFixed(2)}%</div>
+             <div className="task-progress">{prog.toFixed(2)}%</div>
              <button className="project-dropdown-button" onClick={this.select}>expand</button>
              <div className="project-dropdown">
                 {info}

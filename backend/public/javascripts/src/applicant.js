@@ -1,5 +1,5 @@
 'use strict';
-import data from "./data.js"
+var data = window.gameData
 
 class Applicant extends React.Component {
   constructor(props) {
@@ -10,13 +10,14 @@ class Applicant extends React.Component {
   } 
 
   hire(){
-        data.maxEid += 1;
-        data.employees.push(
-         data.applicants[this.props.id]
+        
+    window.gameData.maxEid += 1;
+        window.gameData.employees.push(
+          window.gameData.applicants[this.props.id]
 
 
       )
-      data.applicants.splice(this.props.id, 1)
+      window.gameData.applicants.splice(this.props.id, 1)
   }
 
 
@@ -24,7 +25,6 @@ class Applicant extends React.Component {
   
   render() {
    
-
     return (
         <div className="applicant">
             <div className="applicant-name">{this.props.name}</div>
@@ -34,6 +34,7 @@ class Applicant extends React.Component {
             </button>
         </div>
     );
+   
   }
 }
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import data from "./data.js"
+var data = window.gameData
 
 class Group extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class Group extends React.Component {
   }
 
   assignManager(e){
-      data.groups[this.props.id].eid = e.eid
+    window.gameData.groups[this.props.id].eid = e.eid
       this.setState(
         {
           ...this.state,
@@ -59,10 +59,10 @@ class Group extends React.Component {
             //todo clear assignies after assignment
             let members = [];
             let index = 0;
-            for (let e of data.employees){
+            for (let e of window.gameData.employees){
                
                     
-                if (e.gid == data.groups[this.props.id].gid){
+                if (e.gid == window.gameData.groups[this.props.id].gid){
                     members.push(
                         <div>
                             <div>{index}: {e.name}</div>

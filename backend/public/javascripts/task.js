@@ -8,8 +8,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import data from "./data.js";
-
 var Task = function (_React$Component) {
     _inherits(Task, _React$Component);
 
@@ -20,7 +18,7 @@ var Task = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Task.__proto__ || Object.getPrototypeOf(Task)).call(this, props));
 
         _this.state = {
-            progress: 0,
+            progress: window.gameData.tasks[_this.props.id].proj_percent,
             selected: false
         };
         _this.select = _this.select.bind(_this);
@@ -35,7 +33,7 @@ var Task = function (_React$Component) {
 
             this.update = setInterval(function () {
                 _this2.setState(Object.assign({}, _this2.state, {
-                    progress: data.tasks[_this2.props.id].progress
+                    progress: window.gameData.tasks[_this2.props.id].proj_percent
                 }));
             }, 1);
         }
@@ -66,11 +64,11 @@ var Task = function (_React$Component) {
                 var _iteratorError = undefined;
 
                 try {
-                    for (var _iterator = data.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    for (var _iterator = window.gameData.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                         var e = _step.value;
 
 
-                        if (e.tid == data.tasks[this.props.id].tid) {
+                        if (e.Tid == window.gameData.tasks[this.props.id].Tid) {
                             assignees.push(React.createElement(
                                 "div",
                                 null,
@@ -114,6 +112,11 @@ var Task = function (_React$Component) {
                 info = React.createElement("div", null);
             }
 
+            var prog = 0;
+            if (this.state.progress) {
+                prog = this.state.progress;
+            }
+
             return React.createElement(
                 "div",
                 { className: "task" },
@@ -125,7 +128,7 @@ var Task = function (_React$Component) {
                 React.createElement(
                     "div",
                     { className: "task-progress" },
-                    this.state.progress.toFixed(2),
+                    prog.toFixed(2),
                     "%"
                 ),
                 React.createElement(

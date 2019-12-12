@@ -1,5 +1,9 @@
 
+
 //example data for testing, should be replaced with actual databse later
+
+
+
 var data = {
     money: 10000,
     projects:[
@@ -98,12 +102,39 @@ var data = {
             tid: -1,
             gid: -1
         }
-    ]
-   
+    ],
+   ready: false
 
 
 
 }
+
+fetch("/gameData", {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+      
+    },
+    redirect: 'follow',
+    
+  })
+  .then((res)=>res.text())
+  .then(body=>{
+    
+    data = JSON.parse(body);
+    data.ready = true
+    data.maxEid = 0
+    data.maxPid = 0
+    data.maxGid = 0
+    window.gameData = data
+   console.log(window.gameData)
+   
+   
+  })
+
+
+
 
 var task_names = {
     str: [
@@ -151,14 +182,14 @@ var proj_post = [
     "Rubber ducks"
 ]
 
-function generateTask(pid){
+function generateTask(pid, amt){
     let task = {};
-    task.tid = data.maxTid;
-    data.maxTid++;
+    task.tid = window.gameData.maxTid;
+    window.gameData.maxTid++;
     task.pid = pid;
     task.type = task_names.types[getRandomInt(3)];
     task.name = task_names[task.type][getRandomInt(task_names[task.type].length)];
-    task.progress = 0;
+    task.proj_percent = 100/amt;
     return task;
   
     
@@ -168,16 +199,16 @@ function generateTask(pid){
 function generateProject(){
     let proj = {}
     let tasks = []
-    proj.pid = data.maxPid;
+    proj.Pid = window.gameData.maxPid;
     proj.progress = 0;
    
-
-    for (let i = 0; i < getRandomInt(5) + 1; i++){
-        tasks.push(generateTask(proj.pid))
+    let amt = getRandomInt(5) + 1
+    for (let i = 0; i < amt + 1; i++){
+        tasks.push(generateTask(proj.Pid, amt))
     }
     proj.value = tasks.length * 1000 + getRandomInt(1000)
 
-    data.maxPid++;
+    window.gameData.maxPid++;
     proj.name = proj_pre[getRandomInt(proj_pre.length)] + " " + proj_post[getRandomInt(proj_post.length)]
     return [proj, tasks]
     
@@ -311,131 +342,139 @@ var tick = 0
 
 //gotta use primary keys and stuff in here
 window.setInterval(()=>{
-   //task progress
-    for (let t of data.tasks){
-        for (let e of data.employees){
-            if (e.tid == t.tid && e.tid != -1){
-                if (t.progress < 100){
-                    t.progress += Math.max((e[t.type] + e.morale/50) / 100, 0) 
-                    
-                     // morale modifier
-                } else {
-                    t.progress = 100
-                }
-                
-            }
-        }
-    }
-    //project progress
-    let idx = 0
-    for (let p of data.projects){
-        //reset to 0 to prevent accumulation
-        p.progress = 0;
-        let nTasks = 0;
+
+            //task progress
+        data = window.gameData
+        
+        
         for (let t of data.tasks){
-            if (t.pid == p.pid){
-                p.progress += t.progress
-                nTasks++;
-            }
-        }
-        p.progress /= nTasks;
-        if (p.progress >= 100){
-            //TODO database update here
-            alert(p.name + " was completed!")
-            data.money += p.value
-            data.projects.splice(idx, 1)
-           //reset and remove tasks 
-            for (let t in data.tasks){
-                if (data.tasks[t].pid == p.pid){
-                    for (let e of data.employees){
-                        if (e.tid == data.tasks[t].tid){
-                            e.tid = -1;
-                        }
-                    } 
-
-                    data.tasks.splice(t, 1)
-                }
-                
-            }
-           
-        }
-        idx++;
-       
-        
-    }
-    //wage morale update
-    for (let e of data.employees){
-        if (e.tid != -1){
-            e.morale += (e.wage - 11)
-            data.money -= e.wage
-        } else {
-            //idle morale
-            e.morale -= 0.5
-        }
-
-        if (e.morale > 300){
-            e.morale = 300
-        }
-        
-       
-    }
-    //group morale
-
-    for (let g of data.groups){
-        if (g.gid != -1){
-            let gMorale = 0
-            let mCha = 0
-            let nEmps =0 
             for (let e of data.employees){
-                if (e.gid == g.gid){
-                    gMorale += e.morale
-                    nEmps++;
-                }
-                if (e.eid == g.eid){
-                    if (e.morale > 100){
-                        mCha = -e.cha
+                if (e.Tid == t.Tid && e.Tid != -1){
+                    if (t.proj_percent > 0){
+                        t.proj_percent -= Math.max((e[t.type] + e.morale/50) / 100, 0) 
+                        
+                        // morale modifier
                     } else {
-                        mCha = e.cha
+                        t.proj_percent = 0
+                    }
+                    
+                }
+            }
+        }
+        //project progress
+        let idx = 0
+        for (let p of data.projects){
+            //reset to 0 to prevent accumulation
+            p.progress = 100;
+            let nTasks = 0;
+            for (let t of data.tasks){
+                if (t.Pid == p.Pid){
+                    p.progress -= t.proj_percent
+                    nTasks++;
+                }
+            }
+            p.progress /= nTasks;
+            if (p.progress >= 100){
+                //TODO database update here
+                alert(p.name + " was completed!")
+                data.money += p.value
+                data.projects.splice(idx, 1)
+            //reset and remove tasks 
+                for (let t in data.tasks){
+                    if (data.tasks[t].Pid == p.Pid){
+                        for (let e of data.employees){
+                            if (e.Tid == data.tasks[t].Tid){
+                                e.Tid = -1;
+                            }
+                        } 
+
+                        data.tasks.splice(t, 1)
                     }
                     
                 }
             
             }
-            //spread based on manager's cha
-            gMorale /= nEmps;
-            for (let e of data.employees){
-                if (e.gid == g.gid){
-                    if (e.morale < gMorale){
-                        e.morale += mCha/2;
-                    } else {
-                        e.morale -= 10/(mCha+1);
-                    }
-                }
-            
-            
-            }
-        }
+            idx++;
         
-    }
+            
+        }
+        //wage morale update
+        for (let e of data.employees){
+            if (e.Tid != -1){
+                e.morale += (e.wage - 11)
+                data.money -= e.wage
+            } else {
+                //idle morale
+                e.morale -= 0.5
+            }
+
+            if (e.morale > 300){
+                e.morale = 300
+            }
+            
+        
+        }
+        //group morale
+
+        for (let g of data.groups){
+            if (g.Gid != -1){
+                let gMorale = 0
+                let mCha = 0
+                let nEmps =0 
+                for (let e of data.employees){
+                    if (e.Gid == g.Gid){
+                        gMorale += e.morale
+                        nEmps++;
+                    }
+                    if (e.eid == g.eid){
+                        if (e.morale > 100){
+                            mCha = -e.cha
+                        } else {
+                            mCha = e.cha
+                        }
+                        
+                    }
+                
+                }
+                //spread based on manager's cha
+                gMorale /= nEmps;
+                for (let e of data.employees){
+                    if (e.Gid == g.Gid){
+                        if (e.morale < gMorale){
+                            e.morale += mCha/2;
+                        } else {
+                            e.morale -= 10/(mCha+1);
+                        }
+                    }
+                
+                
+                }
+            }
+            
+        }
 
 
-    //applicants
-    tick += 1
-    if (tick % 60 == 0){
-        data.applicants = [
-            generateEmployee(),
-            generateEmployee(),
-            generateEmployee()
-        ]
-    }
+        //applicants
+        tick += 1
+        if (tick % 60 == 0){
+            data.applicants = [
+                generateEmployee(),
+                generateEmployee(),
+                generateEmployee()
+            ]
+        }
 
-    if (tick % 3600 == 0 || tick == 1){
-        data.projectProposals = [
-            generateProject(),
-            generateProject(),
-            generateProject()
-        ]
-    }
+        if (tick % 3600 == 0 || tick == 1){
+            data.projectProposals = [
+                generateProject(),
+                generateProject(),
+                generateProject()
+            ]
+        }
+
+        window.gameData = data
+    
+  
    
 }, 1000)
 

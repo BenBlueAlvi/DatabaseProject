@@ -8,7 +8,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import data from "./data.js";
+var data = window.gameData;
 
 var Applicant = function (_React$Component) {
     _inherits(Applicant, _React$Component);
@@ -27,9 +27,10 @@ var Applicant = function (_React$Component) {
     _createClass(Applicant, [{
         key: "hire",
         value: function hire() {
-            data.maxEid += 1;
-            data.employees.push(data.applicants[this.props.id]);
-            data.applicants.splice(this.props.id, 1);
+
+            window.gameData.maxEid += 1;
+            window.gameData.employees.push(window.gameData.applicants[this.props.id]);
+            window.gameData.applicants.splice(this.props.id, 1);
         }
     }, {
         key: "render",

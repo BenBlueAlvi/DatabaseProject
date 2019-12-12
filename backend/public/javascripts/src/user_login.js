@@ -1,6 +1,7 @@
 'use strict';
 
 
+
 class UserLogin extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +10,7 @@ class UserLogin extends React.Component {
       username: '',
       password: ''
     };
+    
     //bind all the functions
     this.onUsernameUpdate = this.onUsernameUpdate.bind(this);
     this.onPasswordUpdate = this.onPasswordUpdate.bind(this);
@@ -22,11 +24,29 @@ class UserLogin extends React.Component {
    console.log(JSON.stringify(this.state))
     fetch("/auth", {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        
+      },
+      redirect: 'follow',
       body: JSON.stringify(this.state)
-    }).then((res)=>{
-      //if bad username/password
-      alert(res);
+    }).then((res)=>res.text())
+    .then((t) => {
+        if (t === "allow"){
+          window.location.href = "/game.html"
+         
+
+        
+        }  else {
+          alert(t);
+        }
+       
+      
     })
+    
+    
+   
   }
 
   register(event){

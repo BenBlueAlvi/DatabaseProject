@@ -8,8 +8,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import data from "./data.js";
-
 var Employee = function (_React$Component) {
     _inherits(Employee, _React$Component);
 
@@ -20,12 +18,12 @@ var Employee = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Employee.__proto__ || Object.getPrototypeOf(Employee)).call(this, props));
 
         _this.state = {
-            group: data.groups[0],
-            task: data.tasks[0],
+            group: null,
+            task: null,
             showGroups: false,
             showTasks: false,
-            wage: data.employees[_this.props.id].wage,
-            morale: data.employees[_this.props.id].morale
+            wage: window.gameData.employees[_this.props.id].wage,
+            morale: window.gameData.employees[_this.props.id].morale
 
         };
         _this.groupDropdown = _this.groupDropdown.bind(_this);
@@ -59,7 +57,7 @@ var Employee = function (_React$Component) {
                 task: t
             }));
 
-            data.employees[this.props.id].tid = t.tid;
+            window.gameData.employees[this.props.id].Tid = t.Tid;
         }
     }, {
         key: "assignGroup",
@@ -67,25 +65,25 @@ var Employee = function (_React$Component) {
             this.setState(Object.assign({}, this.state, {
                 group: g
             }));
-            data.employees[this.props.id].gid = g.gid;
+            window.gameData.employees[this.props.id].Gid = g.Gid;
         }
     }, {
         key: "incWage",
         value: function incWage() {
 
-            data.employees[this.props.id].wage += 1;
+            window.gameData.employees[this.props.id].wage += 1;
 
             this.setState(Object.assign({}, this.state, {
-                wage: data.employees[this.props.id].wage
+                wage: window.gameData.employees[this.props.id].wage
             }));
         }
     }, {
         key: "decWage",
         value: function decWage() {
             if (this.state.wage > 0) {
-                data.employees[this.props.id].wage -= 1;
+                window.gameData.employees[this.props.id].wage -= 1;
                 this.setState(Object.assign({}, this.state, {
-                    wage: data.employees[this.props.id].wage
+                    wage: window.gameData.employees[this.props.id].wage
                 }));
             }
         }
@@ -98,7 +96,7 @@ var Employee = function (_React$Component) {
             var groups = void 0;
 
             if (this.state.showGroups) {
-                groups = data.groups.map(function (g, index) {
+                groups = window.gameData.groups.map(function (g, index) {
                     return React.createElement(
                         "div",
                         { className: "dropdown", key: index, onClick: _this2.assignGroup.bind(_this2, g) },
@@ -114,17 +112,17 @@ var Employee = function (_React$Component) {
                 var _iteratorError = undefined;
 
                 try {
-                    for (var _iterator = data.tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    for (var _iterator = window.gameData.tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                         var t = _step.value;
                         var _iteratorNormalCompletion2 = true;
                         var _didIteratorError2 = false;
                         var _iteratorError2 = undefined;
 
                         try {
-                            for (var _iterator2 = data.projects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            for (var _iterator2 = window.gameData.projects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                                 var p = _step2.value;
 
-                                if (t.pid == p.pid) {
+                                if (t.Pid == p.Pid) {
                                     tasks.push(React.createElement(
                                         "div",
                                         { className: "dropdown", key: idx, onClick: this.assignTask.bind(this, t) },
@@ -167,20 +165,30 @@ var Employee = function (_React$Component) {
             }
 
             var morale = "";
-            if (data.employees[this.props.id].morale < 0 && data.employees[this.props.id].morale >= -100) {
+            if (window.gameData.employees[this.props.id].morale < 0 && window.gameData.employees[this.props.id].morale >= -100) {
                 morale = "low";
-            } else if (data.employees[this.props.id].morale < -100 && data.employees[this.props.id].morale >= -200) {
+            } else if (window.gameData.employees[this.props.id].morale < -100 && window.gameData.employees[this.props.id].morale >= -200) {
                 morale = "dismal";
-            } else if (data.employees[this.props.id].morale < -200 && data.employees[this.props.id].morale >= -300) {
+            } else if (window.gameData.employees[this.props.id].morale < -200 && window.gameData.employees[this.props.id].morale >= -300) {
                 morale = "miserable";
-            } else if (data.employees[this.props.id].morale >= 0 && data.employees[this.props.id].morale < 100) {
+            } else if (window.gameData.employees[this.props.id].morale >= 0 && window.gameData.employees[this.props.id].morale < 100) {
                 morale = "high";
-            } else if (data.employees[this.props.id].morale >= 100 && data.employees[this.props.id].morale < 200) {
+            } else if (window.gameData.employees[this.props.id].morale >= 100 && window.gameData.employees[this.props.id].morale < 200) {
                 morale = "great";
-            } else if (data.employees[this.props.id].morale >= 200 && data.employees[this.props.id].morale < 300) {
+            } else if (window.gameData.employees[this.props.id].morale >= 200 && window.gameData.employees[this.props.id].morale < 300) {
                 morale = "elated";
-            } else if (data.employees[this.props.id].morale >= 300) {
+            } else if (window.gameData.employees[this.props.id].morale >= 300) {
                 morale = "extreme";
+            }
+
+            var ggroup = "None";
+            if (this.state.group) {
+                ggroup = this.state.group.name;
+            }
+
+            var ttask = "None";
+            if (this.state.task) {
+                ttask = this.state.task.name;
             }
 
             return React.createElement(
@@ -203,7 +211,7 @@ var Employee = function (_React$Component) {
                         "div",
                         { className: "employee-morale" },
                         "Morale: ",
-                        data.employees[this.props.id].morale
+                        window.gameData.employees[this.props.id].morale
                     ),
                     React.createElement(
                         "div",
@@ -233,7 +241,7 @@ var Employee = function (_React$Component) {
                         "div",
                         { className: "employee-assign" },
                         "Assigned Group: ",
-                        this.state.group.name,
+                        ggroup,
                         React.createElement(
                             "button",
                             { onClick: this.groupDropdown },
@@ -245,7 +253,7 @@ var Employee = function (_React$Component) {
                         "div",
                         { className: "employee-assign" },
                         "Assigned Task: ",
-                        this.state.task.name,
+                        ttask,
                         React.createElement(
                             "button",
                             { onClick: this.taskDropdown },

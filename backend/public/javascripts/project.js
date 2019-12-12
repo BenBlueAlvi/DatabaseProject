@@ -8,8 +8,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import data from "./data.js";
 import Task from "./task.js";
+var data = window.gameData;
 
 var Project = function (_React$Component) {
     _inherits(Project, _React$Component);
@@ -36,7 +36,7 @@ var Project = function (_React$Component) {
 
             this.update = setInterval(function () {
                 _this2.setState(Object.assign({}, _this2.state, {
-                    progress: data.projects[_this2.props.id].progress
+                    progress: window.gameData.projects[_this2.props.id].progress
                 }));
             }, 1000);
         }
@@ -58,9 +58,9 @@ var Project = function (_React$Component) {
 
             var tasks = [];
 
-            for (var t = 1; t < data.tasks.length; t++) {
-                if (data.projects[this.props.id].pid == data.tasks[t].pid) {
-                    tasks.push(React.createElement(Task, { key: t, id: t, name: data.tasks[t].name }));
+            for (var t = 0; t < window.gameData.tasks.length; t++) {
+                if (window.gameData.projects[this.props.id].Pid == window.gameData.tasks[t].Pid) {
+                    tasks.push(React.createElement(Task, { key: t, id: t, name: window.gameData.tasks[t].name }));
                 }
             }
 

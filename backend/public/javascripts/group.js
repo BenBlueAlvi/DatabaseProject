@@ -8,7 +8,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import data from "./data.js";
+var data = window.gameData;
 
 var Group = function (_React$Component) {
     _inherits(Group, _React$Component);
@@ -50,7 +50,7 @@ var Group = function (_React$Component) {
     }, {
         key: "assignManager",
         value: function assignManager(e) {
-            data.groups[this.props.id].eid = e.eid;
+            window.gameData.groups[this.props.id].eid = e.eid;
             this.setState(Object.assign({}, this.state, {
                 managerName: e.name
             }));
@@ -70,11 +70,11 @@ var Group = function (_React$Component) {
                     var _iteratorError = undefined;
 
                     try {
-                        for (var _iterator = data.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        for (var _iterator = window.gameData.employees[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                             var e = _step.value;
 
 
-                            if (e.gid == data.groups[this.props.id].gid) {
+                            if (e.gid == window.gameData.groups[this.props.id].gid) {
                                 members.push(React.createElement(
                                     "div",
                                     null,
