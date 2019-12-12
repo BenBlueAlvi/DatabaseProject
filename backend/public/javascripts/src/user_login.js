@@ -17,6 +17,7 @@ class UserLogin extends React.Component {
 
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
+    this.help = this.help.bind(this);
  
   }
 
@@ -50,7 +51,28 @@ class UserLogin extends React.Component {
   }
 
   register(event){
-   
+    fetch("/register", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+
+      },
+      redirect: 'follow',
+      body: JSON.stringify(this.state)
+    }).then(function (res) {
+      return res.text();
+    }).then(function (t) {
+      if (t === "allow") {
+        window.location.href = "/game.html";
+      } else {
+        alert(t);
+      }
+    });
+  }
+
+  help(){
+    window.location.href = "https://github.com/BenBlueAlvi/DatabaseProject/wiki";
   }
 
   onUsernameUpdate(event){
@@ -83,12 +105,16 @@ class UserLogin extends React.Component {
           <p>Password:</p>
           <input type="password" value={this.state.password} onChange={this.onPasswordUpdate}></input>
         </div>
+      
         <button className="submitButton" onClick={this.login}>
           login
         </button>
         <button className="submitButton" onClick={this.register}>
           register
         </button>
+        <button className = "submitButton" onClick={this.help}>
+            Help
+          </button>
 
        
       </div>

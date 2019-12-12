@@ -28,6 +28,7 @@ var UserLogin = function (_React$Component) {
 
     _this.login = _this.login.bind(_this);
     _this.register = _this.register.bind(_this);
+    _this.help = _this.help.bind(_this);
 
     return _this;
   }
@@ -58,7 +59,6 @@ var UserLogin = function (_React$Component) {
   }, {
     key: 'register',
     value: function register(event) {
-      console.log(JSON.stringify(this.state));
       fetch("/register", {
         method: "POST",
         headers: {
@@ -80,7 +80,7 @@ var UserLogin = function (_React$Component) {
     }
   }, {
     key: 'help',
-    value: function help(event) {
+    value: function help() {
       window.location.href = "https://github.com/BenBlueAlvi/DatabaseProject/wiki";
     }
   }, {
@@ -108,7 +108,7 @@ var UserLogin = function (_React$Component) {
         React.createElement(
           'h1',
           { className: 'title' },
-          'Welcome to Yet Another Management Sim!'
+          'YAMS'
         ),
         React.createElement(
           'div',
@@ -142,8 +142,8 @@ var UserLogin = function (_React$Component) {
         ),
         React.createElement(
           'button',
-          {className: 'submitButton', onClick: this.help},
-          'help'
+          { className: 'submitButton', onClick: this.help },
+          'Help'
         )
       );
     }

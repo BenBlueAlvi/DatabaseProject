@@ -92,6 +92,19 @@ app.get('/gameData', function (req, res, next) {
           //groups
           db.query("SELECT DISTINCT * FROM Groups G WHERE G.Gid IN (SELECT G2.Gid FROM Groups G2, Employees E WHERE E.Gid = G2.Gid AND E.Login = ?)", [req.session.username], (errWo, resGroups) => {
             data.groups = resGroups;
+           
+            for (let e of data.employees){
+              e.desc = e.description
+              for (let g of data.groups){
+                if (e.Gid == g.Gid){
+                  e.morale = g.morale;
+                } else {
+                  e.morale = 0;
+                }
+              }
+              e.morale = 0
+            }
+            
             console.log(errWo)
             db.query("SELECT DISTINCT Money FROM Manager WHERE ? = Login", [req.session.username], (errWo, resMoney) => {
               data.money = resMoney[0].Money;
