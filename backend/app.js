@@ -38,7 +38,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-<<<<<<< HEAD
 
 
 app.get('/test', function(req, res, next) {
@@ -48,14 +47,10 @@ app.get('/test', function(req, res, next) {
 		}
 	);
 });
-=======
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
->>>>>>> 6185ddbe1b5a197eeb01e3e9fd0a94e7022785ab
 
 function goodLogin(uname, pass, table) {
-	for (val in table) {
+ 
+	for (let val of table) {
 		if (val.Login == uname && val.Password == pass) {
 			return true;
 		}
@@ -64,18 +59,20 @@ function goodLogin(uname, pass, table) {
 }
 
 app.post('/auth', function(req, res, next) {
-	console.log(req.body);
-	var username = req.username;
-	var password = req.password;
-	res.test= 1;
+	
+	let username = req.body.username;
+	let password = req.body.password;
+  res.test= 1;
+
 
 	if (username && password) {
-		db.query("SELECT * FROM 'Manager'",
+		db.query("SELECT * FROM `Manager`",
 			(err, results) => {
+        console.log(err)
 				if (goodLogin(username, password, results)) {
 					req.session.loggedin = true;
 					req.session.username = username;
-					res.redirect('/game.html');
+					res.send('allow');
 				} else {
 					res.send('Incorrect Username and/or Password!');
 				}
@@ -83,6 +80,7 @@ app.post('/auth', function(req, res, next) {
 			}
 		);
 	} else {
+    
 		res.send('Please enter a Username and Password!');
 		res.end();
 	}
@@ -90,22 +88,42 @@ app.post('/auth', function(req, res, next) {
 
 app.get('/gameData', function (req, res, next) {
 	if (req.session.loggedin) {
-		var data;
-		db.query("SELECT DISTINCT * FROM Employees e, Groups g, Works_on w WHERE ? = e.Login AND e.Gid = g.Gid AND w.Eid = e.Eid", [req.session.username], (errEmps, resEmps) => {
-			data.emps = resEmps;
-			db.query("SELECT DISTINCT * FROM Projects p, Tasks t, Client c WHERE ? = p.Login AND p.Pid = t.Pid AND c.Pid, p.Pid", (errWo, resProj) => {
-				data.works_on = resProj;
-				res.status(200).send(JSON.stringify(data));
+    var data = {};
+    //emps
+		db.query("SELECT DISTINCT * FROM Employees e WHERE ? = e.Login", [req.session.username], (errEmps, resEmps) => {
+      console.log(errEmps)
+      data.employees = resEmps;
+      
+      //proj
+			db.query("SELECT DISTINCT * FROM Projects p WHERE ? = p.Login", [req.session.username], (errWo, resProj) => {
+        data.projects = resProj;
+        console.log(errWo)
+        //tasks
+        db.query("SELECT DISTINCT * FROM Tasks T WHERE T.Tid IN (SELECT Tid FROM Projects p, Tasks t2 WHERE t2.Pid = p.Pid AND p.Login = ?)", [req.session.username], (errWo, resTasks) => {
+          data.tasks = resTasks;
+          console.log(errWo)
+          //groups
+          db.query("SELECT DISTINCT * FROM Groups G WHERE G.Gid IN (SELECT G2.Gid FROM Groups G2, Employees E WHERE E.Gid = G2.Gid AND E.Login = ?)", [req.session.username], (errWo, resGroups) => {
+            data.groups = resGroups;
+            console.log(errWo)
+            db.query("SELECT DISTINCT Money FROM Manager WHERE ? = Login", [req.session.username], (errWo, resMoney) => {
+              data.money = resMoney[0].Money;
+              console.log(errWo)
+              res.status(200).send(JSON.stringify(data));
+            });
+           
+          });
+          
+         
+        });
 			});
 		});
 	} else {
-		res.redirect('/');
+		res.send('bad');
 	}
 });
 
-<<<<<<< HEAD
 app.use(express.static(path.join(__dirname, 'public')));
-=======
 app.post('/register', function(req,res,next) {
 	var username = req.body.username;
 	var password = req.body.password;
@@ -135,7 +153,6 @@ app.post('newEmployee', function(req, res, next) {
 		});
 	}
 });
->>>>>>> 6185ddbe1b5a197eeb01e3e9fd0a94e7022785ab
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
