@@ -83,7 +83,7 @@ class Employee extends React.Component {
  
   
   render() {
-    let tasks;
+    let tasks = [];
     let groups;
 
     if (this.state.showGroups){
@@ -96,15 +96,21 @@ class Employee extends React.Component {
         ));
     }
 
-
+    let idx = 0
     if (this.state.showTasks){
-       
-        data.tasks.map((t, idx)=>(
-            <div className="dropdown" key={idx} onClick={this.assignTask.bind(this, t)}>
-                {t.pid}: {t.name}
-            </div>
-        ))  
-    
+       for (let t of data.tasks){
+           for (let p of data.projects){
+               if (t.pid == p.pid){
+                    tasks.push(
+                    <div className="dropdown" key={idx} onClick={this.assignTask.bind(this, t)}>
+                        {p.name}: {t.name}
+                    </div>
+                   )
+                   idx++;
+               }
+           }
+       }
+      
     }
 
     let morale = ""
@@ -130,7 +136,7 @@ class Employee extends React.Component {
             <div className="employee-name">{this.props.name}</div>
             <div className="employee-d">
                 <div className="employee-desc">{this.props.desc}</div>
-                <div className="employee-morale">Morale: {morale}</div>
+                <div className="employee-morale">Morale: {data.employees[this.props.id].morale}</div>
                 <div className="employee-wage">
                     <button onClick={this.incWage}>&uarr;</button>
                     <p className="employee-wage-value">${this.state.wage}</p>
@@ -144,12 +150,13 @@ class Employee extends React.Component {
                     <button onClick={this.groupDropdown}>Assign</button>
                     
                 </div>
+                {groups}
                 <div className="employee-assign">
                     Assigned Task: {this.state.task.name}
                     <button onClick={this.taskDropdown}>Assign</button>
                     
                 </div>
-                {groups}
+              
                 {tasks}
             </div>
         </div>

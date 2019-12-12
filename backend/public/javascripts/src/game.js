@@ -62,6 +62,11 @@ class Game extends React.Component {
   }
 
   delGroup(id){
+    for (let e of data.employees){
+        if (e.gid == data.groups[id].gid){
+            e.gid = -1;
+        }
+    }
     data.groups.splice(id, 1)
     let groups = [];
     for (let g = 1; g < data.groups.length; g++){
@@ -72,6 +77,8 @@ class Game extends React.Component {
         groupInput: "",
         groups: groups
       })
+
+    
 
    
   }
@@ -92,7 +99,7 @@ class Game extends React.Component {
     ));
 
     let projectProposals = data.projectProposals.map((p, index)=>(
-        <Proposal key={index} id={index} name={p.name} desc = {p.desc}/>
+        <Proposal key={index} id={index} name={p[0].name} desc = {p[0].desc}/>
     ));
 
     let applicants = data.applicants.map((p, index)=>(
@@ -101,24 +108,24 @@ class Game extends React.Component {
 
     return (
         <div className="game">
-            ${this.state.money}
+            <h1 className="money">${this.state.money}</h1>
             <div className="content">
-                <div className="projects">Projects{projects}</div>
-                <div className="employees">Employees{employees}</div>
+                <div className="projects"><h2 className="col">Projects</h2>{projects}</div>
+                <div className="employees"><h2 className="col">Employees</h2>{employees}</div>
                 <div className="groups">
-                    Groups
-                    <input type="text" value={this.state.groupInput} onChange={this.onGroupInputUpdate}></input>
+                    <h2 className="col">Groups</h2>
+                    <input className="group-nameInput" type="text" value={this.state.groupInput} onChange={this.onGroupInputUpdate}></input>
                     <button onClick={this.addGroup}>+</button>
                     {this.state.groups}
                 </div>
             </div>
             <div className="proposals"> 
                 <div className="project-pro">
-                    Project Proposals
+                    <h2 className="col">Project Proposals</h2>
                     {projectProposals}
                 </div>
                 <div className="employee-pro">
-                    Applying Employees
+                    <h2 className="col">Applying Employees</h2>
                     {applicants}
                 </div>
             </div>

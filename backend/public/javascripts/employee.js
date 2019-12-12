@@ -94,7 +94,7 @@ var Employee = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var tasks = void 0;
+            var tasks = [];
             var groups = void 0;
 
             if (this.state.showGroups) {
@@ -107,17 +107,63 @@ var Employee = function (_React$Component) {
                 });
             }
 
+            var idx = 0;
             if (this.state.showTasks) {
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
 
-                data.tasks.map(function (t, idx) {
-                    return React.createElement(
-                        "div",
-                        { className: "dropdown", key: idx, onClick: _this2.assignTask.bind(_this2, t) },
-                        t.pid,
-                        ": ",
-                        t.name
-                    );
-                });
+                try {
+                    for (var _iterator = data.tasks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var t = _step.value;
+                        var _iteratorNormalCompletion2 = true;
+                        var _didIteratorError2 = false;
+                        var _iteratorError2 = undefined;
+
+                        try {
+                            for (var _iterator2 = data.projects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                var p = _step2.value;
+
+                                if (t.pid == p.pid) {
+                                    tasks.push(React.createElement(
+                                        "div",
+                                        { className: "dropdown", key: idx, onClick: this.assignTask.bind(this, t) },
+                                        p.name,
+                                        ": ",
+                                        t.name
+                                    ));
+                                    idx++;
+                                }
+                            }
+                        } catch (err) {
+                            _didIteratorError2 = true;
+                            _iteratorError2 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                    _iterator2.return();
+                                }
+                            } finally {
+                                if (_didIteratorError2) {
+                                    throw _iteratorError2;
+                                }
+                            }
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return) {
+                            _iterator.return();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
             }
 
             var morale = "";
@@ -157,7 +203,7 @@ var Employee = function (_React$Component) {
                         "div",
                         { className: "employee-morale" },
                         "Morale: ",
-                        morale
+                        data.employees[this.props.id].morale
                     ),
                     React.createElement(
                         "div",
@@ -194,6 +240,7 @@ var Employee = function (_React$Component) {
                             "Assign"
                         )
                     ),
+                    groups,
                     React.createElement(
                         "div",
                         { className: "employee-assign" },
@@ -205,7 +252,6 @@ var Employee = function (_React$Component) {
                             "Assign"
                         )
                     ),
-                    groups,
                     tasks
                 )
             );

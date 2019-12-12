@@ -28,17 +28,7 @@ var Applicant = function (_React$Component) {
         key: "hire",
         value: function hire() {
             data.maxEid += 1;
-            data.employees.push({
-                name: this.props.name,
-                desc: this.props.desc,
-                int: this.props.int,
-                str: this.props.str,
-                cha: this.props.cha,
-                wage: 0,
-                morale: 0,
-                eid: data.maxEid
-
-            });
+            data.employees.push(data.applicants[this.props.id]);
             data.applicants.splice(this.props.id, 1);
         }
     }, {
