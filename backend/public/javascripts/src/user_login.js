@@ -22,7 +22,7 @@ class UserLogin extends React.Component {
   }
 
   login(event){
-   console.log(JSON.stringify(this.state))
+   
     fetch("/auth", {
       method: "POST",
       headers: {

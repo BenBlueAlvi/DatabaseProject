@@ -145,7 +145,7 @@ class Employee extends React.Component {
             <div className="employee-name">{this.props.name}</div>
             <div className="employee-d">
                 <div className="employee-desc">{this.props.desc}</div>
-                <div className="employee-morale">Morale: {window.gameData.employees[this.props.id].morale}</div>
+                <div className="employee-morale">Morale: {morale}</div>
                 <div className="employee-wage">
                     <button onClick={this.incWage}>&uarr;</button>
                     <p className="employee-wage-value">${this.state.wage}</p>

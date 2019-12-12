@@ -211,7 +211,7 @@ var Employee = function (_React$Component) {
                         "div",
                         { className: "employee-morale" },
                         "Morale: ",
-                        window.gameData.employees[this.props.id].morale
+                        morale
                     ),
                     React.createElement(
                         "div",

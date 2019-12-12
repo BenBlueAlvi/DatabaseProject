@@ -87,11 +87,12 @@ app.get('/gameData', function (req, res, next) {
         console.log(errWo)
         //tasks
         db.query("SELECT DISTINCT * FROM Tasks T WHERE T.Tid IN (SELECT Tid FROM Projects p, Tasks t2 WHERE t2.Pid = p.Pid AND p.Login = ?)", [req.session.username], (errWo, resTasks) => {
+          console.log(errWo)
           data.tasks = resTasks;
           for (let e of data.tasks){
             e.tid = e.Tid
           }
-          console.log(errWo)
+          
           //groups
           db.query("SELECT DISTINCT * FROM Groups G WHERE G.Gid IN (SELECT G2.Gid FROM Groups G2, Employees E WHERE E.Gid = G2.Gid AND E.Login = ?)", [req.session.username], (errWo, resGroups) => {
             data.groups = resGroups;

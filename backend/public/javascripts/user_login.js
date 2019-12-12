@@ -36,7 +36,7 @@ var UserLogin = function (_React$Component) {
   _createClass(UserLogin, [{
     key: 'login',
     value: function login(event) {
-      console.log(JSON.stringify(this.state));
+
       fetch("/auth", {
         method: "POST",
         headers: {
