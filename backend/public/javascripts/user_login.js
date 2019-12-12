@@ -83,7 +83,7 @@ var UserLogin = function (_React$Component) {
         React.createElement(
           'h1',
           { className: 'title' },
-          'Hello!'
+          'YAMS'
         ),
         React.createElement(
           'div',
@@ -103,7 +103,7 @@ var UserLogin = function (_React$Component) {
             null,
             'Password:'
           ),
-          React.createElement('input', { type: 'text', value: this.state.password, onChange: this.onPasswordUpdate })
+          React.createElement('input', { type: 'password', value: this.state.password, onChange: this.onPasswordUpdate })
         ),
         React.createElement(
           'button',
