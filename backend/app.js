@@ -39,7 +39,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 
-
 app.get('/test', function(req, res, next) {
 	db.query('SELECT * FROM Suppliers',
 		(err, results) => {
