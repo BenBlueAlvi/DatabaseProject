@@ -1,8 +1,8 @@
 body {
-
-  
-  padding: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
   background-color: slateblue;
+  align-items: center;
 }
 
 a {
@@ -17,6 +17,7 @@ a {
   text-align: center;
 
   margin: 33%;
+  margin-top: 150px;
  
   width: 33%;
 }
