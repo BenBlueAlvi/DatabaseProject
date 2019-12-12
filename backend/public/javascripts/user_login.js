@@ -79,6 +79,11 @@ var UserLogin = function (_React$Component) {
       });
     }
   }, {
+    key: 'help',
+    value: function help(event) {
+      window.location.href = "https://github.com/BenBlueAlvi/DatabaseProject/wiki";
+    }
+  }, {
     key: 'onUsernameUpdate',
     value: function onUsernameUpdate(event) {
 
@@ -134,6 +139,11 @@ var UserLogin = function (_React$Component) {
           'button',
           { className: 'submitButton', onClick: this.register },
           'register'
+        ),
+        React.createElement(
+          'button',
+          {className: 'submitButton', onClick: this.help},
+          'help'
         )
       );
     }

@@ -110,6 +110,7 @@ app.get('/gameData', function (req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 function isValidFieldInput(str){
+	if (str.length > 20) return false;
 	return str.match(/[^\w]|_/) == null;
 }
 
