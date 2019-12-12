@@ -74,14 +74,14 @@ class UserLogin extends React.Component {
 
     return (
       <div className="login">
-        <h1 className="title">Hello!</h1>
+        <h1 className="title">YAMS</h1>
         <div className="inputArea">
           <p>Username:</p>
           <input type="text" value={this.state.username} onChange={this.onUsernameUpdate}></input>
         </div>
         <div className="inputArea">
           <p>Password:</p>
-          <input type="text" value={this.state.password} onChange={this.onPasswordUpdate}></input>
+          <input type="password" value={this.state.password} onChange={this.onPasswordUpdate}></input>
         </div>
         <button className="submitButton" onClick={this.login}>
           login
