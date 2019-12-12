@@ -127,6 +127,7 @@ fetch("/gameData", {
     data.maxEid = 0
     data.maxPid = 0
     data.maxGid = 0
+    data.maxTid = 0
     window.gameData = data
    console.log(window.gameData)
    
@@ -184,9 +185,9 @@ var proj_post = [
 
 function generateTask(pid, amt){
     let task = {};
-    task.tid = window.gameData.maxTid;
+    task.Tid = window.gameData.maxTid;
     window.gameData.maxTid++;
-    task.pid = pid;
+    task.Pid = pid;
     task.type = task_names.types[getRandomInt(3)];
     task.name = task_names[task.type][getRandomInt(task_names[task.type].length)];
     task.proj_percent = 100/amt;
@@ -328,9 +329,9 @@ function generateEmployee(){
         }
     }
     emp.wage = 0;
-    emp.tid = -1;
-    emp.gid = -1;
-    emp.eid = data.maxEid;
+    emp.Tid = -1;
+    emp.Gid = -1;
+    emp.Eid = data.maxEid;
     data.maxEid++;
     emp.morale = 0;
     emp.name = first_names[getRandomInt(first_names.length)] + " " + last_names[getRandomInt(last_names.length)];
@@ -374,7 +375,7 @@ window.setInterval(()=>{
                 }
             }
             p.progress /= nTasks;
-            if (p.progress >= 100){
+            if (p.progress < 0){
                 //TODO database update here
                 alert(p.name + " was completed!")
                 data.money += p.value

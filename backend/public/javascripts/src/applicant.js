@@ -17,7 +17,32 @@ class Applicant extends React.Component {
 
 
       )
+
+      fetch("/newEmployee", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+          
+        },
+        redirect: 'follow',
+        body: JSON.stringify(window.gameData.applicants[this.props.id])
+      }).then((res)=>res.text())
+      .then((t) => {
+         if (t){
+           alert(t);
+         }
+         
+        
+      })
+
+
+
+
       window.gameData.applicants.splice(this.props.id, 1)
+
+
+      
   }
 
 

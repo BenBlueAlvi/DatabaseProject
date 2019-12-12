@@ -11,54 +11,72 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var data = window.gameData;
 
 var Applicant = function (_React$Component) {
-    _inherits(Applicant, _React$Component);
+  _inherits(Applicant, _React$Component);
 
-    function Applicant(props) {
-        _classCallCheck(this, Applicant);
+  function Applicant(props) {
+    _classCallCheck(this, Applicant);
 
-        //setup state
-        var _this = _possibleConstructorReturn(this, (Applicant.__proto__ || Object.getPrototypeOf(Applicant)).call(this, props));
+    //setup state
+    var _this = _possibleConstructorReturn(this, (Applicant.__proto__ || Object.getPrototypeOf(Applicant)).call(this, props));
 
-        _this.hire = _this.hire.bind(_this);
+    _this.hire = _this.hire.bind(_this);
 
-        return _this;
+    return _this;
+  }
+
+  _createClass(Applicant, [{
+    key: "hire",
+    value: function hire() {
+
+      window.gameData.maxEid += 1;
+      window.gameData.employees.push(window.gameData.applicants[this.props.id]);
+
+      fetch("/newEmployee", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+
+        },
+        redirect: 'follow',
+        body: JSON.stringify(window.gameData.applicants[this.props.id])
+      }).then(function (res) {
+        return res.text();
+      }).then(function (t) {
+        if (t) {
+          alert(t);
+        }
+      });
+
+      window.gameData.applicants.splice(this.props.id, 1);
     }
+  }, {
+    key: "render",
+    value: function render() {
 
-    _createClass(Applicant, [{
-        key: "hire",
-        value: function hire() {
+      return React.createElement(
+        "div",
+        { className: "applicant" },
+        React.createElement(
+          "div",
+          { className: "applicant-name" },
+          this.props.name
+        ),
+        React.createElement(
+          "div",
+          { className: "applicant-desc" },
+          this.props.desc
+        ),
+        React.createElement(
+          "button",
+          { onClick: this.hire, className: "applicant-accept" },
+          "Hire"
+        )
+      );
+    }
+  }]);
 
-            window.gameData.maxEid += 1;
-            window.gameData.employees.push(window.gameData.applicants[this.props.id]);
-            window.gameData.applicants.splice(this.props.id, 1);
-        }
-    }, {
-        key: "render",
-        value: function render() {
-
-            return React.createElement(
-                "div",
-                { className: "applicant" },
-                React.createElement(
-                    "div",
-                    { className: "applicant-name" },
-                    this.props.name
-                ),
-                React.createElement(
-                    "div",
-                    { className: "applicant-desc" },
-                    this.props.desc
-                ),
-                React.createElement(
-                    "button",
-                    { onClick: this.hire, className: "applicant-accept" },
-                    "Hire"
-                )
-            );
-        }
-    }]);
-
-    return Applicant;
+  return Applicant;
 }(React.Component);
 
 export default Applicant;
