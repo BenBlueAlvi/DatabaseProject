@@ -34,11 +34,8 @@ var UserLogin = function (_React$Component) {
   _createClass(UserLogin, [{
     key: 'login',
     value: function login(event) {
-<<<<<<< HEAD
       console.log(JSON.stringify(this.state));
-=======
       // window.location.href = "/game.html";
->>>>>>> 6185ddbe1b5a197eeb01e3e9fd0a94e7022785ab
       fetch("/auth", {
         method: "POST",
         body: JSON.stringify(this.state)

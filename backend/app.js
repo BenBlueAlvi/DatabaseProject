@@ -38,8 +38,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-<<<<<<< HEAD
-
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/test', function(req, res, next) {
 	db.query('SELECT * FROM Suppliers',
@@ -48,11 +49,6 @@ app.get('/test', function(req, res, next) {
 		}
 	);
 });
-=======
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
->>>>>>> 6185ddbe1b5a197eeb01e3e9fd0a94e7022785ab
 
 function goodLogin(uname, pass, table) {
 	for (val in table) {
@@ -103,9 +99,7 @@ app.get('/gameData', function (req, res, next) {
 	}
 });
 
-<<<<<<< HEAD
-app.use(express.static(path.join(__dirname, 'public')));
-=======
+
 app.post('/register', function(req,res,next) {
 	var username = req.body.username;
 	var password = req.body.password;
@@ -135,7 +129,7 @@ app.post('newEmployee', function(req, res, next) {
 		});
 	}
 });
->>>>>>> 6185ddbe1b5a197eeb01e3e9fd0a94e7022785ab
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
