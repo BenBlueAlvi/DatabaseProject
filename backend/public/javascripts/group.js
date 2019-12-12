@@ -125,7 +125,7 @@ var Group = function (_React$Component) {
                     var _iteratorError2 = undefined;
 
                     try {
-                        for (var _iterator2 = data.employees[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        for (var _iterator2 = window.gameData.employees[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                             var _e = _step2.value;
 
                             emps.push(React.createElement(

@@ -369,7 +369,7 @@ window.setInterval(()=>{
             let nTasks = 0;
             for (let t of data.tasks){
                 if (t.Pid == p.Pid){
-                    p.progress -= t.proj_percent
+                    p.progress -= t.proj_percent;
                     nTasks++;
                 }
             }

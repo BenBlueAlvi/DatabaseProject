@@ -84,7 +84,7 @@ class Group extends React.Component {
         let manager;
         if (this.state.assign){
             let emps = []
-            for (let e of data.employees){
+            for (let e of window.gameData.employees){
                 emps.push(<div className="dropdown" onClick={this.assignManager.bind(this, e)}>{e.name}</div>)
             }
             manager = <div>{emps}</div>
