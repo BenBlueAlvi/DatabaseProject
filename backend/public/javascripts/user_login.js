@@ -57,7 +57,27 @@ var UserLogin = function (_React$Component) {
     }
   }, {
     key: 'register',
-    value: function register(event) {}
+    value: function register(event) {
+      console.log(JSON.stringify(this.state));
+      fetch("/register", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+
+        },
+        redirect: 'follow',
+        body: JSON.stringify(this.state)
+      }).then(function (res) {
+        return res.text();
+      }).then(function (t) {
+        if (t === "allow") {
+          window.location.href = "/game.html";
+        } else {
+          alert(t);
+        }
+      });
+    }
   }, {
     key: 'onUsernameUpdate',
     value: function onUsernameUpdate(event) {
@@ -83,7 +103,7 @@ var UserLogin = function (_React$Component) {
         React.createElement(
           'h1',
           { className: 'title' },
-          'Hello!'
+          'Welcome to Yet Another Management Sim!'
         ),
         React.createElement(
           'div',
